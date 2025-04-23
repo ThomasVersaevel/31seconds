@@ -31,13 +31,6 @@ export function Game() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-green-100 px-4">
       <Card words={cardWords} />
-      <button
-        onClick={handleNext}
-        className="mt-6 px-5 py-2 bg-blue-600 text-white rounded-xl shadow-lg"
-        disabled={isEmpty}
-      >
-        Next Card
-      </button>
     </div>
   );
 }

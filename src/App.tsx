@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./App.css";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { Game } from "./components/Game";
+import ScoringScreen from "./components/GameComponents/ScoringScreen";
 
 export function App() {
   const [count, setCount] = useState(0);
@@ -30,6 +31,7 @@ export function App() {
         }
       />
       <Route path="/game" element={<Game />} />
+      <Route path="/scoring" element={<ScoringScreen />} />
     </Routes>
   );
 }
