@@ -23,7 +23,7 @@ const Card: React.FC<CardProps> = ({ words }) => {
     }, 1000);
 
     return () => clearTimeout(timer);
-  }, [timeLeft, navigate]);
+  }, [timeLeft, navigate, words]);
 
 
   

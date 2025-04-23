@@ -17,17 +17,6 @@ export function Game() {
   const { getNextWords, reset, isEmpty } = useWordPool(wordsList);
   const [cardWords, setCardWords] = useState<string[]>(getNextWords(5));
 
-  const handleNext = () => {
-    const next = getNextWords(5);
-    if (next.length === 0) {
-      alert("Out of words! Resetting...");
-      reset();
-      setCardWords(getNextWords(5));
-    } else {
-      setCardWords(next);
-    }
-  };
-
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-green-100 px-4">
       <Card words={cardWords} />

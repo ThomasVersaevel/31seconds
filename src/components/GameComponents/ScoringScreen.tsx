@@ -1,28 +1,48 @@
-/* Show the same items from the current card but with checkboxes and add ticked items to score of the current team */
-/* Get 5 items from the enabled categories. Reduce probability for each category after each pick to have a small amount of dupplicate categories. */
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 export function ScoringScreen() {
-  const [timeLeft, setTimeLeft] = useState(31);
   const navigate = useNavigate();
   const location = useLocation();
   const words: string[] = location.state?.words || [];
-  
+
+  const [checkedWords, setCheckedWords] = useState<string[]>([]);
+
+  const toggleWord = (word: string) => {
+    setCheckedWords(prev =>
+      prev.includes(word) ? prev.filter(w => w !== word) : [...prev, word]
+    );
+  };
+
+  const score = checkedWords.length;
+
   return (
-    <>
-        <div className="bg-white w-full max-w-sm mx-auto p-6 rounded-2xl shadow-xl flex flex-col justify-center items-center text-center">
-        {words.map((word, index) => (
-            <p
-            key={index}
-            className="bg-blue-100 text-blue-800 py-3 px-4 rounded-lg text-lg font-medium shadow-sm"
-            >
-            <b>{word}</b>
-            </p>
-        ))}
-        </div>
-    </>
+    <div className="bg-white w-full max-w-sm mx-auto p-6 rounded-2xl shadow-xl flex flex-col justify-center items-center text-center space-y-4">
+      <h2 className="text-xl font-bold text-gray-800">Scoring</h2>
+      {words.map((word, index) => (
+        <label
+          key={index}
+          className="flex items-center space-x-3 bg-blue-100 text-blue-800 px-4 py-2 rounded-lg text-lg font-medium shadow-sm w-full"
+        >
+          <input
+            type="checkbox"
+            checked={checkedWords.includes(word)}
+            onChange={() => toggleWord(word)}
+            className="form-checkbox h-10 w-10"
+          />
+          <span>{word}</span>
+        </label>
+      ))}
+
+      <div className="text-lg font-semibold text-green-700 mt-4">
+        Score: {score}
+      </div>
+
+      <button className="px-4 py-2 bg-gray-500 text-white rounded">
+                Next
+      </button>
+    </div>
   );
-};
+}
 
 export default ScoringScreen;
