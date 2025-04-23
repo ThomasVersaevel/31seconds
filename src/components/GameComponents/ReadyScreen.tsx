@@ -1,0 +1,1 @@
+/* Shows the player and their teamname and has a 'Ready?' button as well as the team scores below. */

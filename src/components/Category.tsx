@@ -1,0 +1,1 @@
+/* Categories are comma separated lists of words/phrases/abriviations that suit that category, you can enable or disable them in the settings */

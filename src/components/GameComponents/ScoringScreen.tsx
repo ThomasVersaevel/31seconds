@@ -1,0 +1,1 @@
+/* Show the same items from the current card but with checkboxes and add ticked items to score of the current team */

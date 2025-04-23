@@ -1,0 +1,1 @@
+/* Settings like categories to include, different timers, final score or more words per card */
