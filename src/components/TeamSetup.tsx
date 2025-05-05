@@ -29,7 +29,11 @@ const TeamSetup: React.FC = () => {
   };
 
   // Update player name
-  const handlePlayerChange = (teamIndex: number, playerIndex: number, name: string) => {
+  const handlePlayerChange = (
+    teamIndex: number,
+    playerIndex: number,
+    name: string
+  ) => {
     const updated = [...teams];
     updated[teamIndex].players[playerIndex] = name;
     setTeams(updated);
@@ -52,7 +56,6 @@ const TeamSetup: React.FC = () => {
   return (
     <div className="w-full max-w-md mx-auto p-6 bg-white rounded-2xl shadow-lg">
       <h2 className="text-xl font-bold text-center mb-4">Team Setup</h2>
-
       <label className="block mb-4">
         <span className="text-gray-700 font-medium">Number of Teams:</span>
         <input

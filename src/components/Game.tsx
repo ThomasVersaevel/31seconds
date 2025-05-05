@@ -8,8 +8,6 @@ import React, { useState } from "react";
 import Card from "./GameComponents/Card";
 import { useWordPool } from "../utils/useWordPool";
 
-export const ROUND_TIME = 31; // seconds
-
 const wordsList = [
   "Balloon", "Tent", "Flashlight", "Saxophone", "Pizza",
   "Banana", "Spaceship", "Tiger", "Laptop", "Whistle", "Grote drol"

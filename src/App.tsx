@@ -4,6 +4,8 @@ import { Game } from "./components/Game";
 import ScoringScreen from "./components/GameComponents/ScoringScreen";
 import ReadyScreen from "./components/GameComponents/ReadyScreen";
 import Settings from "./components/Settings";
+import TeamSetup from "./components/TeamSetup";
+import Card from "./components/GameComponents/Card";
 
 export function App() {
   const navigate = useNavigate();
@@ -42,9 +44,10 @@ export function App() {
       <Route path="/" element={<App />} />
       <Route path="/teamsetup" element={<TeamSetup />} />
       <Route path="/game" element={<Game />} />
+      <Route path="/game/card" element={<Card words={[]} />} />
       <Route path="/settings" element={<Settings />} />
-      <Route path="/scoring" element={<ScoringScreen />} />
-      <Route path="/ready" element={<ReadyScreen />} />
+      <Route path="/game/scoring" element={<ScoringScreen />} />
+      <Route path="/game/ready" element={<ReadyScreen />} />
     </Routes>
   );
 }
