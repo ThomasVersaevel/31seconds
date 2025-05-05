@@ -1,11 +1,11 @@
-import { useState } from "react";
 import "./App.css";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { Game } from "./components/Game";
 import ScoringScreen from "./components/GameComponents/ScoringScreen";
+import ReadyScreen from "./components/GameComponents/ReadyScreen";
+import Settings from "./components/Settings";
 
 export function App() {
-  const [count, setCount] = useState(0);
   const navigate = useNavigate();
 
   return (
@@ -13,25 +13,38 @@ export function App() {
       <Route
         path="/"
         element={
-          <>
-            <h1>31 Seconds</h1>
-            <div className="flex flex-col items-center space-y-4">
-              <button
-                className="px-4 py-2 bg-blue-500 text-white rounded"
-                onClick={() => navigate("/game")}
-              >
-                Start Game
-              </button>
-              <button className="px-4 py-2 bg-gray-500 text-white rounded">
-                Settings
-              </button>
+          <div className="min-h-screen flex flex-col justify-between bg-gray-100">
+            <div className="flex-grow flex flex-col items-center justify-center px-4">
+              <h1 className="text-2xl font-semibold text-center text-gray-800 mb-6">
+                31 Seconds
+              </h1>
+              <div className="flex flex-col items-center space-y-4">
+                <button
+                  className="px-4 py-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  onClick={() => navigate("/game")}
+                >
+                  Start Game
+                </button>
+                <button
+                  className="px-4 py-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  onClick={() => navigate("/settings")}
+                >
+                  Settings
+                </button>
+              </div>
+              <footer className="text-center py-4 text-gray-500 text-sm">
+                By ThoBro
+              </footer>
             </div>
-            <h4>By ThoBro</h4>
-          </>
+          </div>
         }
       />
+      <Route path="/" element={<App />} />
+      <Route path="/teamsetup" element={<TeamSetup />} />
       <Route path="/game" element={<Game />} />
+      <Route path="/settings" element={<Settings />} />
       <Route path="/scoring" element={<ScoringScreen />} />
+      <Route path="/ready" element={<ReadyScreen />} />
     </Routes>
   );
 }

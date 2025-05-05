@@ -8,6 +8,8 @@ import React, { useState } from "react";
 import Card from "./GameComponents/Card";
 import { useWordPool } from "../utils/useWordPool";
 
+export const ROUND_TIME = 31; // seconds
+
 const wordsList = [
   "Balloon", "Tent", "Flashlight", "Saxophone", "Pizza",
   "Banana", "Spaceship", "Tiger", "Laptop", "Whistle", "Grote drol"
@@ -18,7 +20,7 @@ export function Game() {
   const [cardWords, setCardWords] = useState<string[]>(getNextWords(5));
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-green-100 px-4">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-green-500 px-4">
       <Card words={cardWords} />
     </div>
   );
