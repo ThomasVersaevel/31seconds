@@ -1,34 +1,37 @@
-/* Create teams with names and add player names in the teams. Then put them in a rotation */
 import React, { useState } from "react";
-
-interface Team {
-  name: string;
-  players: string[];
-}
+import { Team } from "../context/TeamContext";
+import { useNavigate } from "react-router-dom";
 
 const TeamSetup: React.FC = () => {
-  const [numTeams, setNumTeams] = useState(2);
-  const [teams, setTeams] = useState<Team[]>(
-    Array(2).fill({ name: "", players: [""] })
-  );
+  const [teams, setTeams] = useState<Team[]>([
+    { name: "", players: [""], points: 0, turnOrder: 0 },
+    { name: "", players: [""], points: 0, turnOrder: 1 },
+  ]);
+  const navigate = useNavigate();
 
-  // Update number of teams
-  const handleTeamCountChange = (count: number) => {
-    setNumTeams(count);
-    const updatedTeams = Array(count)
-      .fill(null)
-      .map((_, i) => teams[i] || { name: `Team ${i + 1}`, players: [""] });
-    setTeams(updatedTeams);
+  const handleAddTeam = () => {
+    setTeams((prevTeams) => [
+      ...prevTeams,
+      {
+        name: `Team ${prevTeams.length + 1}`,
+        players: [""],
+        points: 0,
+        turnOrder: prevTeams.length,
+      },
+    ]);
   };
 
-  // Update team name
+  const handleRemoveTeam = (teamIndex: number) => {
+    if (teams.length <= 2) return; // Prevent removing the last two teams
+    setTeams((teams) => teams.slice(teamIndex, 1));
+  };
+
   const handleTeamNameChange = (index: number, name: string) => {
     const updated = [...teams];
     updated[index].name = name;
     setTeams(updated);
   };
 
-  // Update player name
   const handlePlayerChange = (
     teamIndex: number,
     playerIndex: number,
@@ -39,14 +42,12 @@ const TeamSetup: React.FC = () => {
     setTeams(updated);
   };
 
-  // Add player to team
   const handleAddPlayer = (teamIndex: number) => {
     const updated = [...teams];
     updated[teamIndex].players.push("");
     setTeams(updated);
   };
 
-  // Remove player from team
   const handleRemovePlayer = (teamIndex: number, playerIndex: number) => {
     const updated = [...teams];
     updated[teamIndex].players.splice(playerIndex, 1);
@@ -56,27 +57,35 @@ const TeamSetup: React.FC = () => {
   return (
     <div className="w-full max-w-md mx-auto p-6 bg-white rounded-2xl shadow-lg">
       <h2 className="text-xl font-bold text-center mb-4">Team Setup</h2>
-      <label className="block mb-4">
-        <span className="text-gray-700 font-medium">Number of Teams:</span>
-        <input
-          type="number"
-          min={1}
-          max={10}
-          value={numTeams}
-          onChange={(e) => handleTeamCountChange(Number(e.target.value))}
-          className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500"
-        />
-      </label>
+      <span className="text-gray-700">Number of Teams: {teams.length}</span>
+      <div className="mb-4">
+        <button
+          className="w-full mt-2 py-2 bg-green-600 text-white rounded-lg font-medium"
+          onClick={handleAddTeam}
+        >
+          Add Team
+        </button>
+      </div>
 
       {teams.map((team, teamIndex) => (
         <div key={teamIndex} className="mb-6 border p-4 rounded-lg bg-gray-50">
           <label className="block mb-2">
-            <span className="text-gray-700">Team {teamIndex + 1} Name:</span>
+            <button
+              onClick={() => handleRemoveTeam(teamIndex)}
+              className="ml-2 px-2 py-1 bg-red-500 text-white rounded"
+              disabled={team.players.length <= 1}
+            >
+              ✕
+            </button>
+            <span className="px-2 text-gray-700">
+              Team {teamIndex + 1} Name:
+            </span>
+
             <input
               type="text"
               value={team.name}
               onChange={(e) => handleTeamNameChange(teamIndex, e.target.value)}
-              className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm"
+              className="mt-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             />
           </label>
 
@@ -90,7 +99,7 @@ const TeamSetup: React.FC = () => {
                   onChange={(e) =>
                     handlePlayerChange(teamIndex, playerIndex, e.target.value)
                   }
-                  className="flex-1 rounded-lg border-gray-300 shadow-sm"
+                  className="mt-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder={`Player ${playerIndex + 1}`}
                 />
                 <button
@@ -113,8 +122,8 @@ const TeamSetup: React.FC = () => {
       ))}
 
       <button
-        className="w-full mt-4 py-2 bg-green-600 text-white rounded-lg font-medium"
-        onClick={() => console.log("Save teams to context or backend:", teams)}
+        className="w-full mt-4 py-2 bg-blue-600 text-white rounded-lg font-medium"
+        onClick={() => navigate("/game/ready")}
       >
         Save Teams
       </button>

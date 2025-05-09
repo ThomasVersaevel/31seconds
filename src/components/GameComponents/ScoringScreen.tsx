@@ -14,6 +14,12 @@ export function ScoringScreen() {
     );
   };
 
+  const submitScore = (score: number) => {
+    
+
+    navigate("/game/ready", { state: { score } })
+  };
+
   const score = checkedWords.length;
 
   return (
@@ -41,7 +47,7 @@ export function ScoringScreen() {
       <button
           type="button"
           className="w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-          onClick={() => navigate("/game/ready", { state: { score } })}
+          onClick={() => submitScore}
         >Next</button>
     </div>
   );

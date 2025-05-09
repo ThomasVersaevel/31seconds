@@ -1,5 +1,5 @@
 import React from "react";
-import { useGameSettings } from "../context/settingsContext";
+import { useGameSettings } from "../context/SettingsContext";
 import { useNavigate } from "react-router-dom";
 
 const Settings: React.FC = () => {
