@@ -23,7 +23,9 @@ const TeamSetup: React.FC = () => {
 
   const handleRemoveTeam = (teamIndex: number) => {
     if (teams.length <= 2) return; // Prevent removing the last two teams
-    setTeams((teams) => teams.slice(teamIndex, 1));
+    const newTeams = [...teams];
+    newTeams.splice(teamIndex, 1)
+    setTeams(newTeams);
   };
 
   const handleTeamNameChange = (index: number, name: string) => {
@@ -60,7 +62,7 @@ const TeamSetup: React.FC = () => {
       <span className="text-gray-700">Number of Teams: {teams.length}</span>
       <div className="mb-4">
         <button
-          className="w-full mt-2 py-2 bg-green-600 text-white rounded-lg font-medium"
+          className="w-full mt-2 py-2 bg-green-500 text-white rounded-lg font-medium"
           onClick={handleAddTeam}
         >
           Add Team
@@ -72,8 +74,8 @@ const TeamSetup: React.FC = () => {
           <label className="block mb-2">
             <button
               onClick={() => handleRemoveTeam(teamIndex)}
-              className="ml-2 px-2 py-1 bg-red-500 text-white rounded"
-              disabled={team.players.length <= 1}
+              className="ml-2 px-2 py-1 bg-red-500 text-white rounded disabled:bg-gray-300"
+              disabled={teams.length <= 2}
             >
               ✕
             </button>
@@ -104,7 +106,7 @@ const TeamSetup: React.FC = () => {
                 />
                 <button
                   onClick={() => handleRemovePlayer(teamIndex, playerIndex)}
-                  className="ml-2 px-2 py-1 bg-red-500 text-white rounded"
+                  className="ml-2 px-2 py-1 bg-red-500 text-white rounded disabled:bg-gray-300"
                   disabled={team.players.length <= 1}
                 >
                   ✕
