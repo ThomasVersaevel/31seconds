@@ -47,25 +47,14 @@ export function App() {
                 </div>
               }
             />
-            <Route path="/" element={<App />} />
             <Route path="/teamsetup" element={<TeamSetup />} />
             <Route path="/game" element={<Game />} />
             <Route path="/game/card" element={<Card />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/game/scoring" element={<ScoringScreen />} />
-
-            <Route
-              path="/game/ready"
-              element={
-                <ReadyScreen
-                  currentPlayer={""}
-                  currentTeam={""}
-                  onReady={function (): void {
-                    throw new Error("Function not implemented.");
-                  }}
-                />
-              }
-            />
+            <Route path="/game/ready" element={<ReadyScreen currentPlayer={""} currentTeam={""} onReady={function (): void {
+              throw new Error("Function not implemented.");
+            } } />} />
           </Routes>
         </WordsProvider>
       </TeamProvider>

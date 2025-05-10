@@ -1,29 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { useGameSettings } from "../../context/SettingsContext";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useWords, WordsProvider } from "../../context/WordsContext.tsx";
+import { useWords } from "../../context/WordsContext.tsx";
 
 interface CardProps {
-  currentTeam: string;
   currentTeamIndex: number;
-  currentPlayer: string;
 }
 
 export default function Card() {
   const location = useLocation();
-  const { currentTeam, currentTeamIndex, currentPlayer } =
+  const { currentTeamIndex } =
     location.state as CardProps;
-  const { countdownTime } = useGameSettings(); // TODO: Allow setting categories
+  const { countdownTime } = useGameSettings();
   const [timeLeft, setTimeLeft] = useState(countdownTime);
   const navigate = useNavigate();
 
   const { getWords } = useWords();
-  const words = getWords(["boys", "funny", "people", "places", "words"]);
+  const [words, setWords] = useState<string[]>([]);
 
+  // Only call getWords once when component mounts
   useEffect(() => {
-    setTimeLeft(countdownTime);
-  }, [countdownTime]);
+    const selectedWords = getWords(["boys", "funny", "people", "places", "words"]);
+    setWords(selectedWords);
+  }, []);
 
+  // Countdown timer logic
   useEffect(() => {
     if (timeLeft <= 0) {
       navigate("/game/scoring", {
@@ -36,7 +37,7 @@ export default function Card() {
     }
     const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
     return () => clearTimeout(timer);
-  }, [timeLeft, navigate, words, currentTeam, currentTeamIndex, currentPlayer]);
+  }, [timeLeft, navigate, words, currentTeamIndex]);
 
   const percentage = (timeLeft / countdownTime) * 100;
 

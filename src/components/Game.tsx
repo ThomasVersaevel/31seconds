@@ -38,9 +38,7 @@ export function Game() {
     setTeamIndex((prev) => (prev + 1) % teams.length);
     navigate("/game/card", {
       state: {
-        currentTeam: currentTeam.name,
         currentTeamIndex: teamIndex,
-        currentPlayer: currentTeam.players[currentPlayerIndex],
       },
     });
   };

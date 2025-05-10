@@ -9,8 +9,7 @@ interface ScoringScreenProps {
 
 export default function ScoringScreen() {
   const location = useLocation();
-  const { currentTeamIndex, words } =
-    location.state as ScoringScreenProps;
+  const { currentTeamIndex, words } = location.state as ScoringScreenProps;
 
   const navigate = useNavigate();
   const { teams } = useTeams();
@@ -26,7 +25,7 @@ export default function ScoringScreen() {
   const submitScore = (score: number) => {
     teams[currentTeamIndex].points += score;
 
-    navigate("/game/ready");
+    navigate("/game");
   };
   const score = checkedWords?.length || 0;
 
@@ -57,7 +56,7 @@ export default function ScoringScreen() {
       <button
         type="button"
         className="w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-        onClick={() => submitScore}
+        onClick={() => submitScore(score)}
       >
         Next
       </button>
