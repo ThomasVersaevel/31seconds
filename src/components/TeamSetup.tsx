@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { Team } from "../context/TeamContext";
+import { Team, useTeams } from "../context/TeamContext";
 import { useNavigate } from "react-router-dom";
 
 const TeamSetup: React.FC = () => {
+  const { setTeams: setGlobalTeams } = useTeams();
+
   const [teams, setTeams] = useState<Team[]>([
     { name: "", players: [""], points: 0, turnOrder: 0 },
     { name: "", players: [""], points: 0, turnOrder: 1 },
@@ -24,7 +26,7 @@ const TeamSetup: React.FC = () => {
   const handleRemoveTeam = (teamIndex: number) => {
     if (teams.length <= 2) return; // Prevent removing the last two teams
     const newTeams = [...teams];
-    newTeams.splice(teamIndex, 1)
+    newTeams.splice(teamIndex, 1);
     setTeams(newTeams);
   };
 
@@ -54,6 +56,11 @@ const TeamSetup: React.FC = () => {
     const updated = [...teams];
     updated[teamIndex].players.splice(playerIndex, 1);
     setTeams(updated);
+  };
+
+  const saveTeams = () => {
+    setGlobalTeams(teams);
+    navigate("/game")
   };
 
   return (
@@ -125,7 +132,7 @@ const TeamSetup: React.FC = () => {
 
       <button
         className="w-full mt-4 py-2 bg-blue-600 text-white rounded-lg font-medium"
-        onClick={() => navigate("/game/ready")}
+        onClick={saveTeams}
       >
         Save Teams
       </button>

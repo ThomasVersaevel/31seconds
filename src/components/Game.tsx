@@ -1,25 +1,62 @@
-/* Cycle between players and show them the 'ready' screen with scoreboard in the bottom 
- * When clicking large ready button show the player 5 randomly selected words to explain to their teammates
- * Start a 31 second timer and when it ends buzz or pop another colored screen to tick the options guessed correctly, then add the points
- * Mark the used 5 words such that they dont show up again this game
- * Cycle to a new player and have them pass the phone
-*/
-import React, { useState } from "react";
-import Card from "./GameComponents/Card";
-import { useWordPool } from "../utils/useWordPool";
-
-const wordsList = [
-  "Balloon", "Tent", "Flashlight", "Saxophone", "Pizza",
-  "Banana", "Spaceship", "Tiger", "Laptop", "Whistle", "Grote drol"
-];
+import React, { useEffect, useState } from "react";
+import ReadyScreen from "./GameComponents/ReadyScreen";
+import { useTeams } from "../context/TeamContext";
+import { useNavigate } from "react-router-dom";
 
 export function Game() {
-  const { getNextWords, reset, isEmpty } = useWordPool(wordsList);
-  const [cardWords, setCardWords] = useState<string[]>(getNextWords(5));
+  const navigate = useNavigate();
+  const { teams } = useTeams();
+
+  const [teamIndex, setTeamIndex] = useState(0);
+  const [playerIndices, setPlayerIndices] = useState<{ [key: number]: number }>(
+    {}
+  );
+
+  // Initialize player indices once teams are loaded
+  useEffect(() => {
+    if (teams.length) {
+      const initialPlayerIndices: { [key: number]: number } = {};
+      teams.forEach((_, idx) => {
+        initialPlayerIndices[idx] = 0;
+      });
+      setPlayerIndices(initialPlayerIndices);
+    }
+  }, [teams]);
+
+  const nextUp = () => {
+    const currentTeam = teams[teamIndex];
+    const currentPlayerIndex = playerIndices[teamIndex] ?? 0;
+    const nextPlayerIndex =
+      (currentPlayerIndex + 1) % currentTeam.players.length;
+
+    // Update player index for current team
+    setPlayerIndices((prev) => ({
+      ...prev,
+      [teamIndex]: nextPlayerIndex,
+    }));
+
+    setTeamIndex((prev) => (prev + 1) % teams.length);
+    navigate("/game/card", {
+      state: {
+        currentTeam: currentTeam.name,
+        currentTeamIndex: teamIndex,
+        currentPlayer: currentTeam.players[currentPlayerIndex],
+      },
+    });
+  };
+
+  // Get current player and team
+  const currentTeam = teams[teamIndex];
+  const currentPlayerIndex = playerIndices[teamIndex] ?? 0;
+  const currentPlayer = currentTeam?.players?.[currentPlayerIndex] ?? "";
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-green-500 px-4">
-      <Card words={cardWords} />
+      <ReadyScreen
+        currentPlayer={currentPlayer}
+        currentTeam={currentTeam?.name || ""}
+        onReady={nextUp}
+      />
     </div>
   );
 }

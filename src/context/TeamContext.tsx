@@ -12,7 +12,6 @@ interface TeamContextType {
   teams: Team[];
   setTeams: (teams: Team[]) => void;
   updateTeamPoints: (teamIndex: number, points: number) => void;
-  resetTeams: () => void;
 }
 
 const TeamContext = createContext<TeamContextType | undefined>(undefined);
@@ -28,13 +27,9 @@ export const TeamProvider = ({ children }: { children: ReactNode }) => {
     );
   };
 
-  const resetTeams = () => {
-    setTeams([]);
-  };
-
   return (
     <TeamContext.Provider
-      value={{ teams, setTeams, updateTeamPoints, resetTeams }}
+      value={{ teams, setTeams, updateTeamPoints }}
     >
       {children}
     </TeamContext.Provider>

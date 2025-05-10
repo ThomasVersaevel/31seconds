@@ -1,30 +1,40 @@
 import React, { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useTeams } from "../../context/TeamContext";
 
-export function ScoringScreen() {
-  const navigate = useNavigate();
+interface ScoringScreenProps {
+  currentTeamIndex: number;
+  words: string[];
+}
+
+export default function ScoringScreen() {
   const location = useLocation();
-  const words: string[] = location.state?.words || [];
+  const { currentTeamIndex, words } =
+    location.state as ScoringScreenProps;
+
+  const navigate = useNavigate();
+  const { teams } = useTeams();
 
   const [checkedWords, setCheckedWords] = useState<string[]>([]);
 
   const toggleWord = (word: string) => {
-    setCheckedWords(prev =>
-      prev.includes(word) ? prev.filter(w => w !== word) : [...prev, word]
+    setCheckedWords((prev) =>
+      prev.includes(word) ? prev.filter((w) => w !== word) : [...prev, word]
     );
   };
 
   const submitScore = (score: number) => {
-    
+    teams[currentTeamIndex].points += score;
 
-    navigate("/game/ready", { state: { score } })
+    navigate("/game/ready");
   };
-
-  const score = checkedWords.length;
+  const score = checkedWords?.length || 0;
 
   return (
-    <div className="bg-white w-full max-w-sm mx-auto p-6 rounded-2xl shadow-xl flex flex-col justify-center items-center text-center space-y-4">
-      <h2 className="text-xl font-bold text-gray-800">Scoring</h2>
+    <div className="bg-green-200 w-full max-w-sm mx-auto p-6 rounded-2xl shadow-xl flex flex-col justify-center items-center text-center space-y-4">
+      <h2 className="text-xl font-bold text-gray-800">
+        {teams[currentTeamIndex].name} Scoring
+      </h2>
       {words.map((word, index) => (
         <label
           key={index}
@@ -45,12 +55,12 @@ export function ScoringScreen() {
       </div>
 
       <button
-          type="button"
-          className="w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-          onClick={() => submitScore}
-        >Next</button>
+        type="button"
+        className="w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+        onClick={() => submitScore}
+      >
+        Next
+      </button>
     </div>
   );
 }
-
-export default ScoringScreen;

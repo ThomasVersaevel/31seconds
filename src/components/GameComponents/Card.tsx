@@ -1,29 +1,42 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useGameSettings } from "../../context/SettingsContext";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useWords, WordsProvider } from "../../context/WordsContext.tsx";
 
 interface CardProps {
-  words: string[];
+  currentTeam: string;
+  currentTeamIndex: number;
+  currentPlayer: string;
 }
 
-const Card: React.FC<CardProps> = ({ words }) => {
-  const { countdownTime } = useGameSettings();
+export default function Card() {
+  const location = useLocation();
+  const { currentTeam, currentTeamIndex, currentPlayer } =
+    location.state as CardProps;
+  const { countdownTime } = useGameSettings(); // TODO: Allow setting categories
   const [timeLeft, setTimeLeft] = useState(countdownTime);
   const navigate = useNavigate();
 
-  // Reset timer when words change
+  const { getWords } = useWords();
+  const words = getWords(["boys", "funny", "people", "places", "words"]);
+
   useEffect(() => {
     setTimeLeft(countdownTime);
-  }, [words, countdownTime]);
+  }, [countdownTime]);
 
   useEffect(() => {
     if (timeLeft <= 0) {
-      navigate("/game/scoring", { state: { words } });
+      navigate("/game/scoring", {
+        state: {
+          currentTeamIndex,
+          words,
+        },
+      });
       return;
     }
     const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
     return () => clearTimeout(timer);
-  }, [timeLeft, navigate, words]);
+  }, [timeLeft, navigate, words, currentTeam, currentTeamIndex, currentPlayer]);
 
   const percentage = (timeLeft / countdownTime) * 100;
 
@@ -36,6 +49,7 @@ const Card: React.FC<CardProps> = ({ words }) => {
           style={{ width: `${percentage}%` }}
         ></div>
       </div>
+
       {words.map((word, index) => (
         <div
           key={index}
@@ -46,6 +60,4 @@ const Card: React.FC<CardProps> = ({ words }) => {
       ))}
     </div>
   );
-};
-
-export default Card;
+}
