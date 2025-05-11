@@ -20,9 +20,10 @@ const Settings: React.FC = () => {
   ];
 
   const toggleCategory = (key: Category) => {
-    setSelectedCategories((prev: Category[]) =>
-      prev.includes(key) ? prev.filter((c) => c !== key) : [...prev, key]
-    );
+    const newCategories = selectedCategories.includes(key)
+      ? selectedCategories.filter((c) => c !== key)
+      : [...selectedCategories, key];
+    setSelectedCategories(newCategories);
   };
 
   // Sort categories: active first
