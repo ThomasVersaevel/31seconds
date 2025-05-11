@@ -1,5 +1,5 @@
 // Holds globals for the game settings
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, ReactNode } from "react";
 
 interface GameSettings {
   targetScore: number;

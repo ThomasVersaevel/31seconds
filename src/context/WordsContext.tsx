@@ -1,11 +1,4 @@
-
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  ReactNode,
-} from "react";
+import { createContext, useContext, useState, ReactNode } from "react";
 
 // Import CSV files as raw strings
 import boysCategory from "../assets/categories/boys.csv?raw";
@@ -14,11 +7,13 @@ import peopleCategory from "../assets/categories/people.csv?raw";
 import placesCategory from "../assets/categories/places.csv?raw";
 import wordsCategory from "../assets/categories/words.csv?raw";
 
-type Category = "boys" | "funny" | "people" | "places" | "words";
+export type Category = "boys" | "funny" | "people" | "places" | "words";
 
 interface WordsContextType {
   getWords: (categories: Category[]) => string[];
   resetWords: () => void;
+  selectedCategories: Category[];
+  setSelectedCategories: (categories: Category[]) => void;
 }
 
 const NR_WORDS = 5;
@@ -26,6 +21,14 @@ const NR_WORDS = 5;
 const WordsContext = createContext<WordsContextType | undefined>(undefined);
 
 export const WordsProvider = ({ children }: { children: ReactNode }) => {
+  const [selectedCategories, setSelectedCategories] = useState<Category[]>([
+    "boys",
+    "funny",
+    "people",
+    "places",
+    "words",
+  ]);
+
   const wordPools: Record<Category, string[]> = {
     boys: boysCategory
       .split(",")
@@ -51,13 +54,16 @@ export const WordsProvider = ({ children }: { children: ReactNode }) => {
 
   const [usedWords, setUsedWords] = useState<Set<string>>(new Set());
 
-  const getWords = (categories: Category[]): string[] => {
+  const getWords = (categories: Category[] = selectedCategories): string[] => {
     const selectedWords: string[] = [];
     const availablePools = categories.map((cat) =>
       wordPools[cat].filter((word) => !usedWords.has(word))
     );
 
-    while (selectedWords.length < NR_WORDS && availablePools.flat().length > 0) {
+    while (
+      selectedWords.length < NR_WORDS &&
+      availablePools.flat().length > 0
+    ) {
       const catIndex = Math.floor(Math.random() * categories.length);
       const pool = availablePools[catIndex];
 
@@ -76,7 +82,14 @@ export const WordsProvider = ({ children }: { children: ReactNode }) => {
   const resetWords = () => setUsedWords(new Set());
 
   return (
-    <WordsContext.Provider value={{ getWords, resetWords }}>
+    <WordsContext.Provider
+      value={{
+        getWords,
+        resetWords,
+        selectedCategories,
+        setSelectedCategories,
+      }}
+    >
       {children}
     </WordsContext.Provider>
   );

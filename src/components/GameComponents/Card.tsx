@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useGameSettings } from "../../context/GameSettingsContext.tsx";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useWords } from "../../context/WordsContext.tsx";
@@ -9,18 +9,17 @@ interface CardProps {
 
 export default function Card() {
   const location = useLocation();
-  const { currentTeamIndex } =
-    location.state as CardProps;
+  const { currentTeamIndex } = location.state as CardProps;
   const { countdownTime } = useGameSettings();
   const [timeLeft, setTimeLeft] = useState(countdownTime);
   const navigate = useNavigate();
 
-  const { getWords } = useWords();
+  const { selectedCategories, getWords } = useWords();
   const [words, setWords] = useState<string[]>([]);
 
   // Only call getWords once when component mounts
   useEffect(() => {
-    const selectedWords = getWords(["boys", "funny", "people", "places", "words"]);
+    const selectedWords = getWords(selectedCategories);
     setWords(selectedWords);
   }, []);
 

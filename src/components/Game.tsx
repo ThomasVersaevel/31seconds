@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ReadyScreen from "./GameComponents/ReadyScreen";
 import { useTeams } from "../context/TeamContext";
 import { useNavigate } from "react-router-dom";
