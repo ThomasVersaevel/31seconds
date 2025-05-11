@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useGameSettings } from "../../context/SettingsContext";
+import { useGameSettings } from "../../context/GameSettingsContext.tsx";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useWords } from "../../context/WordsContext.tsx";
 

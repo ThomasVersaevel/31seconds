@@ -1,7 +1,7 @@
 import "./App.css";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { Game } from "./components/Game";
-import { GameSettingsProvider } from "./context/SettingsContext";
+import { GameSettingsProvider } from "./context/GameSettingsContext";
 import ScoringScreen from "./components/GameComponents/ScoringScreen";
 import ReadyScreen from "./components/GameComponents/ReadyScreen";
 import Settings from "./components/Settings";
