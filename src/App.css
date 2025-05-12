@@ -16,7 +16,7 @@
   }
   100% {
     transform: rotate(360deg);
-    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    border-radius: 60% 40% 40% 70% / 60% 40% 70% 40%;
   }
 }
 .z-1 {
