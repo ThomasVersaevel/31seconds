@@ -9,6 +9,7 @@ import TeamSetup from "./components/TeamSetup";
 import Card from "./components/GameComponents/Card";
 import { TeamProvider } from "./context/TeamContext";
 import { WordsProvider } from "./context/WordsContext";
+import Winner from "./components/GameComponents/Winner";
 
 export function App() {
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ export function App() {
             <Route
               path="/"
               element={
-                <div className="min-h-screen flex flex-col justify-between bg-green-200">
+                <div className="bg-sky-800 w-full max-w-sm mx-auto p-6 rounded-2xl shadow-xl flex flex-col justify-center items-center text-center min-h-screen flex flex-col justify-between">
                   <div className="flex-grow flex flex-col items-center justify-center px-4">
                     <h1 className="text-2xl font-semibold text-center text-gray-800 mb-6">
                       31 Seconds
@@ -55,6 +56,7 @@ export function App() {
             <Route path="/game/ready" element={<ReadyScreen currentPlayer={""} currentTeam={""} onReady={function (): void {
               throw new Error("Function not implemented.");
             } } />} />
+            <Route path="/game/winner" element={<Winner teamName={""} />} />
           </Routes>
         </WordsProvider>
       </TeamProvider>

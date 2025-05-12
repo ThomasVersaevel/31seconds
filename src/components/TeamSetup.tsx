@@ -6,10 +6,13 @@ const TeamSetup: React.FC = () => {
   const { setTeams: setGlobalTeams } = useTeams();
 
   const [teams, setTeams] = useState<Team[]>([
-    { name: "", players: [""], points: 0, nextUpIndex: 0 },
-    { name: "", players: [""], points: 0, nextUpIndex: 0 },
+    { name: "Team 1", players: [""], points: 0, nextUpIndex: 0 },
+    { name: "Team 2", players: [""], points: 0, nextUpIndex: 0 },
   ]);
   const navigate = useNavigate();
+
+  sessionStorage.removeItem("gameWords");
+  sessionStorage.removeItem("timeLeft");
 
   const handleAddTeam = () => {
     setTeams((prevTeams) => [
@@ -65,7 +68,7 @@ const TeamSetup: React.FC = () => {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto p-6 bg-white rounded-2xl shadow-lg">
+    <div className="w-full max-w-md mx-auto p-6 bg-sky-800 rounded-2xl shadow-lg">
       <h2 className="text-xl font-bold text-center mb-4">Team Setup</h2>
       <span className="text-gray-700">Number of Teams: {teams.length}</span>
       <div className="mb-4">

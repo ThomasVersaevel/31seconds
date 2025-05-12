@@ -34,7 +34,7 @@ const Settings: React.FC = () => {
   });
 
   return (
-    <div className="w-full max-w-sm mx-auto mt-10 p-6 bg-white rounded-2xl shadow-xl">
+    <div className="w-full max-w-sm mx-auto mt-10 p-6 bg-sky-800 rounded-2xl shadow-xl">
       <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">
         Game Settings
       </h2>

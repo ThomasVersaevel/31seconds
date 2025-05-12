@@ -29,7 +29,7 @@ export default function ScoringScreen() {
   const score = checkedWords?.length || 0;
 
   return (
-    <div className="bg-green-200 w-full max-w-sm mx-auto p-6 rounded-2xl shadow-xl flex flex-col justify-center items-center text-center space-y-4">
+    <div className="bg-sky-800 w-full max-w-sm mx-auto p-6 rounded-2xl shadow-xl flex flex-col justify-center items-center text-center space-y-4">
       <h2 className="text-xl font-bold text-gray-800">
         {teams[currentTeamIndex].name} Scoring
       </h2>

@@ -18,16 +18,42 @@ export default function Card() {
   const [words, setWords] = useState<string[]>([]);
 
   // Prevent page refresh
+  const preventRefresh = () => {
+    return "data will get lost";
+  };
+
+  useEffect(() => {
+    window.addEventListener("beforeunload", preventRefresh);
+
+    return () => {
+      window.removeEventListener("beforeunload", preventRefresh);
+    };
+  }, []);
 
   // Only call getWords once when component mounts
   useEffect(() => {
-    const selectedWords = getWords(selectedCategories);
-    setWords(selectedWords);
+    const savedWords = sessionStorage.getItem("gameWords");
+    const savedTime = sessionStorage.getItem("timeLeft");
+
+    if (savedWords) {
+      setWords(JSON.parse(savedWords));
+    } else {
+      const selectedWords = getWords(selectedCategories);
+      setWords(selectedWords);
+      sessionStorage.setItem("gameWords", JSON.stringify(selectedWords));
+    }
+
+    if (savedTime) {
+      setTimeLeft(Number(savedTime));
+    }
   }, []);
 
-  // Countdown timer logic
+  // Countdown timer logic with sessionStorage to prevent data loss on page refresh
   useEffect(() => {
     if (timeLeft <= 0) {
+      sessionStorage.removeItem("gameWords");
+      sessionStorage.removeItem("timeLeft");
+
       navigate("/game/scoring", {
         state: {
           currentTeamIndex,
@@ -36,14 +62,22 @@ export default function Card() {
       });
       return;
     }
-    const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
+
+    const timer = setTimeout(() => {
+      setTimeLeft((prev) => {
+        const updated = prev - 1;
+        sessionStorage.setItem("timeLeft", String(updated));
+        return updated;
+      });
+    }, 1000);
+
     return () => clearTimeout(timer);
   }, [timeLeft]);
 
   const percentage = (timeLeft / countdownTime) * 100;
 
   return (
-    <div className="bg-white w-full max-w-sm mx-auto p-6 rounded-2xl shadow-xl flex flex-col justify-center items-center text-center">
+    <div className="bg-sky-800 w-full max-w-sm mx-auto p-6 rounded-2xl shadow-xl flex flex-col justify-center items-center text-center">
       <div className="mb-4 text-2xl font-bold text-red-600">{timeLeft}s</div>
       <div className="w-full h-3 mb-6 bg-gray-200 rounded-full overflow-hidden">
         <div

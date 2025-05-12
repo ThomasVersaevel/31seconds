@@ -10,7 +10,7 @@ const ReadyScreen: React.FC<ReadyScreenProps> = ({
   onReady,
 }) => {
   return (
-    <div className="bg-white w-full max-w-sm mx-auto p-6 rounded-2xl shadow-xl flex flex-col justify-center items-center text-center space-y-4">
+    <div className="bg-sky-800 w-full max-w-sm mx-auto p-6 rounded-2xl shadow-xl flex flex-col justify-center items-center text-center space-y-4">
       <h1>{currentTeam}</h1>
       <h2 className="mt-10 mb-10 text-xl font-bold text-gray-800">
         Player {currentPlayer} are you ready?
