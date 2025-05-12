@@ -34,8 +34,8 @@ const Settings: React.FC = () => {
   });
 
   return (
-    <div className="w-full max-w-sm mx-auto mt-10 p-6 bg-sky-800 rounded-2xl shadow-xl">
-      <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">
+    <div className="w-full h-screen p-6 bg-sky-800 flex flex-col justify-center">
+      <h2 className="text-3xl text-sky-300 font-bold text-center mb-auto">
         Game Settings
       </h2>
 
@@ -43,9 +43,9 @@ const Settings: React.FC = () => {
         <div className="flex flex-col gap-2">
           <label
             htmlFor="targetScore"
-            className="text-sm font-medium text-gray-700 dark:text-white"
+            className="text-sm font-medium text-sky-300 dark:text-white"
           >
-            Points needed to win the game
+            Total points
           </label>
           <input
             id="targetScore"
@@ -53,14 +53,14 @@ const Settings: React.FC = () => {
             min={1}
             value={targetScore}
             onChange={(e) => setTargetScore(parseInt(e.target.value))}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:text-white"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-30 p-2.5 dark:bg-gray-700 dark:text-white"
           />
         </div>
 
         <div className="flex flex-col gap-2">
           <label
             htmlFor="roundTime"
-            className="text-sm font-medium text-gray-700 dark:text-white"
+            className="text-sm font-medium text-sky-300 dark:text-white"
           >
             Round Time (seconds)
           </label>
@@ -70,12 +70,12 @@ const Settings: React.FC = () => {
             min={5}
             value={countdownTime}
             onChange={(e) => setCountdownTime(parseInt(e.target.value))}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:text-white"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-30 p-2.5 dark:bg-gray-700 dark:text-white"
           />
         </div>
 
         <div className="mt-4">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-sky-300 mb-2">
             Select Categories
           </label>
           <div className="grid grid-cols-3 gap-2">
@@ -86,7 +86,7 @@ const Settings: React.FC = () => {
                   key={cat.key}
                   type="button"
                   onClick={() => toggleCategory(cat.key as Category)}
-                  className={`p-3 rounded-lg border text-xs font-semibold text-center transition-colors ${
+                  className={`p-3 rounded-lg border text-xs font-semibold text-center transition-colors duration-450 ease-in-out ${
                     active
                       ? "bg-green-500 text-white border-green-600"
                       : "bg-gray-100 text-gray-700 border-gray-300"
@@ -98,10 +98,9 @@ const Settings: React.FC = () => {
             })}
           </div>
         </div>
-
         <button
           type="button"
-          className="w-full px-4 py-2 mt-6 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+          className="w-full mt-auto px-4 py-2 mt-6 bg-blue-500 text-white rounded-lg hover:bg-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-200 focus:ring-opacity-50"
           onClick={() => navigate("/")}
         >
           Save and exit
