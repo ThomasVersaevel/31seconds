@@ -10,14 +10,15 @@ const ReadyScreen: React.FC<ReadyScreenProps> = ({
   onReady,
 }) => {
   return (
-    <div className="bg-sky-800 w-full h-full max-w-sm p-6 rounded-2xl shadow-xl flex flex-col justify-center items-center text-center space-y-4">
-      <h2 className="text-xl font-bold text-sky-500">{currentTeam}</h2>
-      <h2 className="mt-5 mb-12 text-xl font-bold text-gray-200">
-        Player {currentPlayer} are you ready?
+    <div className="w-full h-screen min-h-screen bg-sky-800 p-6 flex flex-col text-center">
+      <h2 className="text-xl font-bold text-sky-300 mb-auto">{currentTeam}</h2>
+      <h2 className="m-auto text-2xl font-bold text-gray-200">
+        Player <br /> {currentPlayer} <br />
+        are you ready?
       </h2>
       <button
         type="button"
-        className="w-full px-4 py-2 bg-sky-500 text-white rounded-lg hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-sky-200 focus:ring-opacity-50"
+        className="w-full mt-auto px-4 py-2 bg-sky-500 text-white rounded-lg hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-sky-200 focus:ring-opacity-50"
         onClick={onReady}
       >
         Next

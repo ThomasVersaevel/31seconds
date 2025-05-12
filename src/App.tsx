@@ -22,7 +22,7 @@ export function App() {
             <Route
               path="/"
               element={
-                <div className="bg-gradient-to-t  from-sky-800 to-sky-700 w-full max-w-sm mx-auto p-6 rounded-2xl shadow-xl flex flex-col justify-center items-center text-center min-h-screen flex flex-col justify-between">
+                <div className="bg-gradient-to-t from-sky-800 to-sky-700 w-full mx-auto p-6 shadow-xl flex flex-col justify-center items-center text-center min-h-screen flex flex-col justify-between">
                   <div className="blob"> </div>
                   <div className="flex-grow flex flex-col items-center justify-center px-4">
                     <h1 className="text-4xl font-semibold text-center text-orange-500 mb-6">

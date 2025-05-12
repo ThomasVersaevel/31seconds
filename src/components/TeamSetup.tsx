@@ -68,9 +68,11 @@ const TeamSetup: React.FC = () => {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto p-6 bg-sky-800 rounded-2xl shadow-lg">
-      <h2 className="text-3xl text-sky-500 font-bold text-center mb-4">Team Setup</h2>
-      <span className="text-gray-300">Number of Teams: {teams.length}</span>
+    <div className="w-full h-screen p-6 bg-sky-800 min-h-screen flex flex-col">
+      <h2 className="text-3xl text-sky-300 font-bold text-center mb-4">
+        Team Setup
+      </h2>
+      <span className="text-gray-300 text-center">Teams: {teams.length}</span>
       <div className="mb-4">
         <button
           className="w-full mt-2 py-2 bg-gradient-to-t from-emerald-400 to-emerald-500 text-slate-200 rounded-lg font-medium"
@@ -81,7 +83,10 @@ const TeamSetup: React.FC = () => {
       </div>
 
       {teams.map((team, teamIndex) => (
-        <div key={teamIndex} className="mb-6 border p-4 rounded-lg bg-gradient-to-t from-gray-50 to-sky-200">
+        <div
+          key={teamIndex}
+          className="mb-6 border p-4 rounded-lg bg-gradient-to-t from-sky-100 to-sky-200"
+        >
           <label className="block mb-2">
             <button
               onClick={() => handleRemoveTeam(teamIndex)}
@@ -135,7 +140,7 @@ const TeamSetup: React.FC = () => {
       ))}
 
       <button
-        className="w-full mt-4 py-2 bg-sky-600 text-white focus:ring-sky-300 hover:bg-sky-200 rounded-lg font-medium"
+        className="w-full mt-auto mt-4 py-2 bg-sky-600 text-white focus:ring-sky-300 hover:bg-sky-200 rounded-lg font-medium "
         onClick={saveTeams}
       >
         Save Teams

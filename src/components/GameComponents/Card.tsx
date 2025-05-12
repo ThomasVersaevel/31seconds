@@ -54,12 +54,17 @@ export default function Card() {
       sessionStorage.removeItem("gameWords");
       sessionStorage.removeItem("timeLeft");
 
-      navigate("/game/scoring", {
-        state: {
-          currentTeamIndex,
-          words,
-        },
-      });
+      setTimeout(() => {
+        sessionStorage.removeItem("gameWords");
+        sessionStorage.removeItem("timeLeft");
+
+        navigate("/game/scoring", {
+          state: {
+            currentTeamIndex,
+            words,
+          },
+        });
+      }, 1000); // Delay navigation by 100ms
       return;
     }
 
@@ -74,26 +79,29 @@ export default function Card() {
     return () => clearTimeout(timer);
   }, [timeLeft]);
 
-  const percentage = (timeLeft / countdownTime) * 100;
-
   return (
-    <div className="bg-sky-800 w-full max-w-sm mx-auto p-6 rounded-2xl shadow-xl flex flex-col justify-center items-center text-center">
-      <div className="mb-4 text-2xl font-bold text-sky-200">{timeLeft}s</div>
-      <div className="w-full h-3 mb-6 bg-blue-100 rounded-full overflow-hidden">
-        <div
-          className="h-full bg-orange-500 transition-all duration-1000 ease-linear"
-          style={{ width: `${percentage}%` }}
-        ></div>
-      </div>
-
-      {words.map((word, index) => (
-        <div
-          key={index}
-          className="bg-blue-100 text-black py-3 px-4 rounded-lg text-lg font-medium shadow-sm w-full mb-2"
-        >
-          <b>{word}</b>
+    <div className="w-full h-screen m-auto p-6 bg-sky-800 min-h-screen flex flex-col items-center text-center">
+      <div className="m-auto">
+        <div className="mb-4 text-2xl font-bold text-sky-200">{timeLeft}s</div>
+        <div className="w-75 h-3 mb-6 bg-blue-100 rounded-full overflow-hidden">
+          <div
+            className="h-full bg-orange-500 transition-all duration-1000 ease-linear"
+            style={{
+              width: `${
+                (timeLeft / countdownTime) * 100
+              }%`,
+            }}
+          ></div>
         </div>
-      ))}
+        {words.map((word, index) => (
+          <div
+            key={index}
+            className="z-1 bg-blue-100 text-black py-3 px-4 rounded-lg text-lg font-medium shadow-sm w-75 mb-2"
+          >
+            <b>{word}</b>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

@@ -29,29 +29,30 @@ export default function ScoringScreen() {
   const score = checkedWords?.length || 0;
 
   return (
-    <div className="bg-sky-800 w-full max-w-sm mx-auto p-6 rounded-2xl shadow-xl flex flex-col justify-center items-center text-center space-y-4">
-      <h2 className="text-xl font-bold text-sky-500">
+    <div className="bg-sky-800 w-full h-screen mx-auto p-6 flex flex-col justify-center items-center text-center space-y-4">
+      <h2 className="text-xl font-bold text-sky-300 mb-auto">
         {teams[currentTeamIndex].name} Scoring
       </h2>
-      {words.map((word, index) => (
-        <label
-          key={index}
-          className="flex items-center space-x-3 bg-blue-100 text-black px-4 py-2 rounded-lg text-lg font-medium shadow-sm w-full"
-        >
-          <input
-            type="checkbox"
-            checked={checkedWords.includes(word)}
-            onChange={() => toggleWord(word)}
-            className="form-checkbox h-8 w-10"
-          />
-          <span>{word}</span>
-        </label>
-      ))}
-
-      <div className="text-lg font-semibold text-slate-400 mt-4 space-y-1">
+      <div className="bg-blue-100 rounded-lg rounded-lg p-3 shadow-sm w-75">
+        {words.map((word, index) => (
+          <label
+            key={index}
+            className="flex items-center space-x-3 bg-blue-100 text-black px-4 py-2 text-lg font-medium "
+          >
+            <input
+              type="checkbox"
+              checked={checkedWords.includes(word)}
+              onChange={() => toggleWord(word)}
+              className="form-checkbox h-8 w-10"
+            />
+            <span>{word}</span>
+          </label>
+        ))}
+      </div>
+      <div className="mt-auto text-lg font-semibold mt-4 space-y-1">
         {teams.map((team, index) => (
           <div key={index}>
-            {team.name}: {team.points} points
+            <span className="text-slate-400">{team.name}:</span> <span className="text-slate-300">{team.points} points</span>
           </div>
         ))}
       </div>

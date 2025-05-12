@@ -30,7 +30,7 @@ export function Game() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen px-4">
+    <div className="flex flex-col items-center justify-center">
       <ReadyScreen
         currentPlayer={
           teams[currentTeamIndex].players[teams[currentTeamIndex].nextUpIndex]
