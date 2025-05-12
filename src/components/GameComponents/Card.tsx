@@ -78,10 +78,10 @@ export default function Card() {
 
   return (
     <div className="bg-sky-800 w-full max-w-sm mx-auto p-6 rounded-2xl shadow-xl flex flex-col justify-center items-center text-center">
-      <div className="mb-4 text-2xl font-bold text-red-600">{timeLeft}s</div>
-      <div className="w-full h-3 mb-6 bg-gray-200 rounded-full overflow-hidden">
+      <div className="mb-4 text-2xl font-bold text-sky-200">{timeLeft}s</div>
+      <div className="w-full h-3 mb-6 bg-blue-100 rounded-full overflow-hidden">
         <div
-          className="h-full bg-red-500 transition-all duration-1000 ease-linear"
+          className="h-full bg-orange-500 transition-all duration-1000 ease-linear"
           style={{ width: `${percentage}%` }}
         ></div>
       </div>
@@ -89,7 +89,7 @@ export default function Card() {
       {words.map((word, index) => (
         <div
           key={index}
-          className="bg-blue-100 text-blue-800 py-3 px-4 rounded-lg text-lg font-medium shadow-sm w-full mb-2"
+          className="bg-blue-100 text-black py-3 px-4 rounded-lg text-lg font-medium shadow-sm w-full mb-2"
         >
           <b>{word}</b>
         </div>

@@ -30,25 +30,25 @@ export default function ScoringScreen() {
 
   return (
     <div className="bg-sky-800 w-full max-w-sm mx-auto p-6 rounded-2xl shadow-xl flex flex-col justify-center items-center text-center space-y-4">
-      <h2 className="text-xl font-bold text-gray-800">
+      <h2 className="text-xl font-bold text-sky-500">
         {teams[currentTeamIndex].name} Scoring
       </h2>
       {words.map((word, index) => (
         <label
           key={index}
-          className="flex items-center space-x-3 bg-blue-100 text-blue-800 px-4 py-2 rounded-lg text-lg font-medium shadow-sm w-full"
+          className="flex items-center space-x-3 bg-blue-100 text-black px-4 py-2 rounded-lg text-lg font-medium shadow-sm w-full"
         >
           <input
             type="checkbox"
             checked={checkedWords.includes(word)}
             onChange={() => toggleWord(word)}
-            className="form-checkbox h-10 w-10"
+            className="form-checkbox h-8 w-10"
           />
           <span>{word}</span>
         </label>
       ))}
 
-      <div className="text-lg font-semibold text-green-700 mt-4 space-y-1">
+      <div className="text-lg font-semibold text-slate-400 mt-4 space-y-1">
         {teams.map((team, index) => (
           <div key={index}>
             {team.name}: {team.points} points
@@ -58,7 +58,7 @@ export default function ScoringScreen() {
 
       <button
         type="button"
-        className="w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+        className="w-full px-4 py-2 bg-sky-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
         onClick={() => submitScore(score)}
       >
         Next

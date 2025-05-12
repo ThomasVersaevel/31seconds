@@ -23,25 +23,26 @@ export function App() {
               path="/"
               element={
                 <div className="bg-sky-800 w-full max-w-sm mx-auto p-6 rounded-2xl shadow-xl flex flex-col justify-center items-center text-center min-h-screen flex flex-col justify-between">
+                  <div className="blob"> </div>
                   <div className="flex-grow flex flex-col items-center justify-center px-4">
-                    <h1 className="text-2xl font-semibold text-center text-gray-800 mb-6">
+                    <h1 className="text-4xl font-semibold text-center text-orange-500 mb-6">
                       31 Seconds
                     </h1>
-                    <div className="flex flex-col items-center space-y-4">
+                    <div className="z-1 flex flex-col items-center space-y-4">
                       <button
-                        className="px-4 py-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        className="pw-full px-4 py-2 bg-sky-500 text-white rounded-lg hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-sky-300 focus:ring-opacity-50"
                         onClick={() => navigate("/teamsetup")}
                       >
                         Start Game
                       </button>
                       <button
-                        className="px-4 py-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        className="w-full px-4 py-2 bg-sky-500 text-white rounded-lg hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-sky-300 focus:ring-opacity-50"
                         onClick={() => navigate("/settings")}
                       >
                         Settings
                       </button>
                     </div>
-                    <footer className="text-center py-4 text-gray-500 text-sm">
+                    <footer className="text-center py-4 text-gray-300  text-sm">
                       By ThoBro
                     </footer>
                   </div>
@@ -53,9 +54,18 @@ export function App() {
             <Route path="/game/card" element={<Card />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/game/scoring" element={<ScoringScreen />} />
-            <Route path="/game/ready" element={<ReadyScreen currentPlayer={""} currentTeam={""} onReady={function (): void {
-              throw new Error("Function not implemented.");
-            } } />} />
+            <Route
+              path="/game/ready"
+              element={
+                <ReadyScreen
+                  currentPlayer={""}
+                  currentTeam={""}
+                  onReady={function (): void {
+                    throw new Error("Function not implemented.");
+                  }}
+                />
+              }
+            />
             <Route path="/game/winner" element={<Winner teamName={""} />} />
           </Routes>
         </WordsProvider>
