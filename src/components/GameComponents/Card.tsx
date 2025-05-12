@@ -17,6 +17,8 @@ export default function Card() {
   const { selectedCategories, getWords } = useWords();
   const [words, setWords] = useState<string[]>([]);
 
+  // Prevent page refresh
+
   // Only call getWords once when component mounts
   useEffect(() => {
     const selectedWords = getWords(selectedCategories);
@@ -36,7 +38,7 @@ export default function Card() {
     }
     const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
     return () => clearTimeout(timer);
-  }, [timeLeft, navigate, words, currentTeamIndex]);
+  }, [timeLeft]);
 
   const percentage = (timeLeft / countdownTime) * 100;
 

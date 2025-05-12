@@ -6,8 +6,8 @@ const TeamSetup: React.FC = () => {
   const { setTeams: setGlobalTeams } = useTeams();
 
   const [teams, setTeams] = useState<Team[]>([
-    { name: "", players: [""], points: 0, turnOrder: 0 },
-    { name: "", players: [""], points: 0, turnOrder: 1 },
+    { name: "", players: [""], points: 0, nextUpIndex: 0 },
+    { name: "", players: [""], points: 0, nextUpIndex: 0 },
   ]);
   const navigate = useNavigate();
 
@@ -19,6 +19,7 @@ const TeamSetup: React.FC = () => {
         players: [""],
         points: 0,
         turnOrder: prevTeams.length,
+        nextUpIndex: 0,
       },
     ]);
   };
@@ -60,7 +61,7 @@ const TeamSetup: React.FC = () => {
 
   const saveTeams = () => {
     setGlobalTeams(teams);
-    navigate("/game")
+    navigate("/game");
   };
 
   return (

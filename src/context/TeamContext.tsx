@@ -5,31 +5,52 @@ export interface Team {
   name: string;
   players: string[];
   points: number;
-  turnOrder: number;
+  nextUpIndex: 0;
 }
 
 interface TeamContextType {
   teams: Team[];
   setTeams: (teams: Team[]) => void;
-  updateTeamPoints: (teamIndex: number, points: number) => void;
+  currentTeamIndex: number;
+  advanceTeamIndex: (points: number) => void;
 }
 
 const TeamContext = createContext<TeamContextType | undefined>(undefined);
 
 export const TeamProvider = ({ children }: { children: ReactNode }) => {
   const [teams, setTeams] = useState<Team[]>([]);
+  const [currentTeamIndex, setCurrentTeamIndex] = useState(0);
 
-  const updateTeamPoints = (teamIndex: number, points: number) => {
-    setTeams((prev) =>
-      prev.map((team, index) =>
-        index === teamIndex ? { ...team, points } : team
-      )
-    );
+  const advanceTeamIndex = (points: number) => {
+    advancePlayerIndex(currentTeamIndex, points);
+    setCurrentTeamIndex((prev) => (prev + 1) % teams.length);
   };
 
+  // Iterate over players of the current team and save the index of the next up player
+  const advancePlayerIndex = (teamIndex: number, score: number) => {
+    const updatedNextUpIndex =
+      (teams[teamIndex].nextUpIndex + 1) % teams[teamIndex].players.length;
+
+    const updatedTeams = teams.map((team, index) =>
+      index === teamIndex
+        ? {
+            ...team,
+            nextUpIndex: updatedNextUpIndex,
+            points: team.points + score, // Use team.points here
+          }
+        : team
+    ) as Team[];
+
+    setTeams(updatedTeams);
+  };
   return (
     <TeamContext.Provider
-      value={{ teams, setTeams, updateTeamPoints }}
+      value={{
+        teams,
+        setTeams,
+        currentTeamIndex,
+        advanceTeamIndex,
+      }}
     >
       {children}
     </TeamContext.Provider>

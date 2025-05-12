@@ -12,7 +12,7 @@ export default function ScoringScreen() {
   const { currentTeamIndex, words } = location.state as ScoringScreenProps;
 
   const navigate = useNavigate();
-  const { teams } = useTeams();
+  const { teams, advanceTeamIndex } = useTeams();
 
   const [checkedWords, setCheckedWords] = useState<string[]>([]);
 
@@ -23,8 +23,7 @@ export default function ScoringScreen() {
   };
 
   const submitScore = (score: number) => {
-    teams[currentTeamIndex].points += score;
-
+    advanceTeamIndex(score);
     navigate("/game");
   };
   const score = checkedWords?.length || 0;
@@ -49,8 +48,12 @@ export default function ScoringScreen() {
         </label>
       ))}
 
-      <div className="text-lg font-semibold text-green-700 mt-4">
-        Score: {score}
+      <div className="text-lg font-semibold text-green-700 mt-4 space-y-1">
+        {teams.map((team, index) => (
+          <div key={index}>
+            {team.name}: {team.points} points
+          </div>
+        ))}
       </div>
 
       <button
