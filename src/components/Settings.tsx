@@ -39,44 +39,48 @@ const Settings: React.FC = () => {
         Game Settings
       </h2>
 
-      <form className="space-y-6">
-        <div className="flex flex-col gap-2">
-          <label
-            htmlFor="targetScore"
-            className="text-sm font-medium text-sky-300 dark:text-white"
-          >
-            Total points
-          </label>
-          <input
-            id="targetScore"
-            type="number"
-            min={1}
-            value={targetScore}
-            onChange={(e) => setTargetScore(parseInt(e.target.value))}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-30 p-2.5 dark:bg-gray-700 dark:text-white"
-          />
-        </div>
+      <form className="space-y-8">
+        <div className="flex justify-center">
+          <div className="grid grid-cols-2 gap-6 w-full max-w-md">
+            <div className="flex flex-col gap-2">
+              <label
+                htmlFor="targetScore"
+                className="text-lg font-medium text-sky-200 text-center"
+              >
+                Total points
+              </label>
+              <input
+                id="targetScore"
+                type="number"
+                min={1}
+                value={targetScore}
+                onChange={(e) => setTargetScore(parseInt(e.target.value))}
+                className="bg-sky-200 focus:border-grey-800 border border-gray-800 text-gray-900 text-xl rounded-lg w-full p-2.5 text-center"
+              />
+            </div>
 
-        <div className="flex flex-col gap-2">
-          <label
-            htmlFor="roundTime"
-            className="text-sm font-medium text-sky-300 dark:text-white"
-          >
-            Round Time (seconds)
-          </label>
-          <input
-            id="roundTime"
-            type="number"
-            min={5}
-            value={countdownTime}
-            onChange={(e) => setCountdownTime(parseInt(e.target.value))}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-30 p-2.5 dark:bg-gray-700 dark:text-white"
-          />
+            <div className="flex flex-col gap-2">
+              <label
+                htmlFor="roundTime"
+                className="text-lg font-medium text-sky-200 text-center"
+              >
+                Round Time
+              </label>
+              <input
+                id="roundTime"
+                type="number"
+                min={5}
+                value={countdownTime}
+                onChange={(e) => setCountdownTime(parseInt(e.target.value))}
+                className="bg-sky-200 focus:border-grey-800 border-gray-800 text-gray-900 text-xl rounded-lg w-full p-2.5 text-center"
+              />
+            </div>
+          </div>
         </div>
 
         <div className="mt-4">
-          <label className="block text-sm font-medium text-sky-300 mb-2">
-            Select Categories
+          <label className="text-center block text-1xl font-medium text-sky-200 mb-2">
+            Select Categories to use in the game
           </label>
           <div className="grid grid-cols-3 gap-2">
             {sortedCategories.map((cat) => {
@@ -98,9 +102,20 @@ const Settings: React.FC = () => {
             })}
           </div>
         </div>
+
+        <div className="flex flex-col gap-2 items-center">
+          <button
+            type="button"
+            className="w-35 mt-auto px-2 py-1 mt-6 bg-orange-400 text-white rounded-lg hover:bg-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-200 focus:ring-opacity-50"
+            onClick={() => navigate("/new-category")}
+          >
+            Create Category
+          </button>
+        </div>
+
         <button
           type="button"
-          className="w-full mt-auto px-4 py-2 mt-6 bg-blue-500 text-white rounded-lg hover:bg-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-200 focus:ring-opacity-50"
+          className="w-full mt-auto px-4 py-2 mt-6 bg-sky-500 text-white rounded-lg hover:bg-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-200 focus:ring-opacity-50"
           onClick={() => navigate("/")}
         >
           Save and exit
