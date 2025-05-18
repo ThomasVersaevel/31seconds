@@ -3,6 +3,7 @@ import { useGameSettings } from "../context/GameSettingsContext";
 import { useWords } from "../context/WordsContext";
 import { useNavigate } from "react-router-dom";
 import { Category } from "../context/WordsContext";
+import { PlusCircleIcon, MinusCircleIcon } from "@heroicons/react/24/solid";
 
 const Settings: React.FC = () => {
   const { countdownTime, setCountdownTime, targetScore, setTargetScore } =
@@ -10,14 +11,12 @@ const Settings: React.FC = () => {
   const { selectedCategories, setSelectedCategories } = useWords();
   const navigate = useNavigate();
 
-  // Define available categories and display labels
-  const allCategories: { key: Category; label: string }[] = [
-    { key: "boys", label: "Boys" },
-    { key: "funny", label: "Funny" },
-    { key: "people", label: "People" },
-    { key: "places", label: "Places" },
-    { key: "words", label: "Words" },
-  ];
+  // Dynamically create all categories from selectedCategories to include custom ones
+  const allCategories: { key: Category; label: string }[] =
+    selectedCategories.map((cat) => ({
+      key: cat,
+      label: cat.charAt(0).toUpperCase() + cat.slice(1), // Capitalize first letter
+    }));
 
   const toggleCategory = (key: Category) => {
     const newCategories = selectedCategories.includes(key)
@@ -103,20 +102,30 @@ const Settings: React.FC = () => {
           </div>
         </div>
 
-        <div className="flex flex-col gap-2 items-center">
+        <div className="grid grid-cols-3 items-start gap-4">
           <button
             type="button"
-            className="w-35 mt-auto px-2 py-1 mt-6 bg-orange-400 text-white rounded-lg hover:bg-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-200 focus:ring-opacity-50"
-            onClick={() => navigate("/new-category")}
+            className="flex items-center gap-2 text-left justify-start w-full px-3 py-2 mt-6 bg-orange-400 text-sm text-white rounded-lg hover:bg-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-200 focus:ring-opacity-50"
+            onClick={() => navigate("/add-category")}
           >
-            Create Category
+            <PlusCircleIcon className="h-5 w-5" />
+            <span>Create Category</span>
+          </button>
+
+          <button
+            type="button"
+            className="flex items-center gap-2 text-left w-full px-3 py-2 mt-6 bg-rose-600 text-sm text-white rounded-lg hover:bg-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-200 focus:ring-opacity-50"
+            onClick={() => navigate("/delete-category")}
+          >
+            <MinusCircleIcon className="h-5 w-5" />
+            <span>Delete Category</span>
           </button>
         </div>
 
         <button
           type="button"
           className="w-full mt-auto px-4 py-2 mt-6 bg-sky-500 text-white rounded-lg hover:bg-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-200 focus:ring-opacity-50"
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/delete")}
         >
           Save and exit
         </button>
