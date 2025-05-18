@@ -1,19 +1,27 @@
-import { createContext, useContext, useState, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
 
-// Import CSV files as raw strings
+// Raw imports
 import boysCategory from "../assets/categories/boys.csv?raw";
 import funnyCategory from "../assets/categories/funny.csv?raw";
 import peopleCategory from "../assets/categories/people.csv?raw";
 import placesCategory from "../assets/categories/places.csv?raw";
 import wordsCategory from "../assets/categories/words.csv?raw";
 
-export type Category = "boys" | "funny" | "people" | "places" | "words";
+export type Category = string; // Changed from union type to support dynamic custom categories
 
 interface WordsContextType {
   getWords: (categories: Category[]) => string[];
   resetWords: () => void;
   selectedCategories: Category[];
+  allCategories: Category[];
   setSelectedCategories: (categories: Category[]) => void;
+  refreshCategories: () => void;
 }
 
 const NR_WORDS = 5;
@@ -29,35 +37,49 @@ export const WordsProvider = ({ children }: { children: ReactNode }) => {
     "words",
   ]);
 
-  const wordPools: Record<Category, string[]> = {
-    boys: boysCategory
-      .split(",")
-      .map((w) => w.trim())
-      .filter(Boolean),
-    funny: funnyCategory
-      .split(",")
-      .map((w) => w.trim())
-      .filter(Boolean),
-    people: peopleCategory
-      .split(",")
-      .map((w) => w.trim())
-      .filter(Boolean),
-    places: placesCategory
-      .split(",")
-      .map((w) => w.trim())
-      .filter(Boolean),
-    words: wordsCategory
-      .split(",")
-      .map((w) => w.trim())
-      .filter(Boolean),
-  };
+  const [allCategories, setAllCategories] = useState<Category[]>([
+    "boys",
+    "funny",
+    "people",
+    "places",
+    "words",
+  ]);
+
+  const [wordPools, setWordPools] = useState<Record<Category, string[]>>({
+    boys: parseCSV(boysCategory),
+    funny: parseCSV(funnyCategory),
+    people: parseCSV(peopleCategory),
+    places: parseCSV(placesCategory),
+    words: parseCSV(wordsCategory),
+  });
 
   const [usedWords, setUsedWords] = useState<Set<string>>(new Set());
 
+  useEffect(() => {
+    const customPools: Record<Category, string[]> = {};
+
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.endsWith(".csv")) {
+        const name = key.replace(".csv", "");
+        const csv = localStorage.getItem(key);
+        if (csv) {
+          customPools[name] = parseCSV(csv);
+        }
+      }
+    }
+
+    setWordPools((prev) => ({ ...prev, ...customPools }));
+
+    const customKeys = Object.keys(customPools);
+    setSelectedCategories((prev) => [...new Set([...prev, ...customKeys])]);
+    setAllCategories((prev) => [...new Set([...prev, ...customKeys])]);
+  }, []);
+
   const getWords = (categories: Category[] = selectedCategories): string[] => {
     const selectedWords: string[] = [];
-    const availablePools = categories.map((cat) =>
-      wordPools[cat].filter((word) => !usedWords.has(word))
+    const availablePools = categories.map(
+      (cat) => wordPools[cat]?.filter((word) => !usedWords.has(word)) || []
     );
 
     while (
@@ -79,6 +101,29 @@ export const WordsProvider = ({ children }: { children: ReactNode }) => {
     return selectedWords;
   };
 
+  const refreshCategories = () => {
+    const customPools: Record<Category, string[]> = {};
+
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.endsWith(".csv")) {
+        const name = key.replace(".csv", "");
+        const csv = localStorage.getItem(key);
+        if (csv) {
+          customPools[name] = parseCSV(csv);
+        }
+      }
+    }
+
+    setWordPools((prev) => ({ ...prev, ...customPools }));
+
+    const customKeys = Object.keys(customPools) as Category[];
+    setSelectedCategories((prev) => [...new Set([...prev, ...customKeys])]);
+
+    const builtIn: Category[] = ["boys", "funny", "people", "places", "words"];
+    setAllCategories([...builtIn, ...customKeys]);
+  };
+
   const resetWords = () => setUsedWords(new Set());
 
   return (
@@ -87,7 +132,9 @@ export const WordsProvider = ({ children }: { children: ReactNode }) => {
         getWords,
         resetWords,
         selectedCategories,
+        allCategories,
         setSelectedCategories,
+        refreshCategories
       }}
     >
       {children}
@@ -95,6 +142,13 @@ export const WordsProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
+const parseCSV = (csv: string): string[] =>
+  csv
+    .split(",")
+    .map((w) => w.trim())
+    .filter(Boolean);
+
+// eslint-disable-next-line react-refresh/only-export-components
 export const useWords = () => {
   const context = useContext(WordsContext);
   if (!context) throw new Error("useWords must be used within a WordsProvider");

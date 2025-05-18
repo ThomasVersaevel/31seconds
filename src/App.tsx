@@ -10,6 +10,8 @@ import Card from "./components/GameComponents/Card";
 import { TeamProvider } from "./context/TeamContext";
 import { WordsProvider } from "./context/WordsContext";
 import Winner from "./components/GameComponents/Winner";
+import CreateCategory from "./components/CreateCategory";
+import DeleteCategory from "./components/DeleteCategory";
 
 export function App() {
   const navigate = useNavigate();
@@ -54,6 +56,8 @@ export function App() {
             <Route path="/game" element={<Game />} />
             <Route path="/game/card" element={<Card />} />
             <Route path="/settings" element={<Settings />} />
+            <Route path="/add-category" element={<CreateCategory />} />
+            <Route path="/delete-category" element={<DeleteCategory />} />
             <Route path="/game/scoring" element={<ScoringScreen />} />
             <Route
               path="/game/ready"

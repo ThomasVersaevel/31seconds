@@ -57,6 +57,7 @@ export const TeamProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useTeams = () => {
   const context = useContext(TeamContext);
   if (!context) {
