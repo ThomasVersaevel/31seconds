@@ -8,15 +8,9 @@ import { PlusCircleIcon, MinusCircleIcon } from "@heroicons/react/24/solid";
 const Settings: React.FC = () => {
   const { countdownTime, setCountdownTime, targetScore, setTargetScore } =
     useGameSettings();
-  const { selectedCategories, setSelectedCategories } = useWords();
+  const { allCategories, selectedCategories, setSelectedCategories } =
+    useWords();
   const navigate = useNavigate();
-
-  // Dynamically create all categories from selectedCategories to include custom ones
-  const allCategories: { key: Category; label: string }[] =
-    selectedCategories.map((cat) => ({
-      key: cat,
-      label: cat.charAt(0).toUpperCase() + cat.slice(1), // Capitalize first letter
-    }));
 
   const toggleCategory = (key: Category) => {
     const newCategories = selectedCategories.includes(key)
@@ -25,12 +19,16 @@ const Settings: React.FC = () => {
     setSelectedCategories(newCategories);
   };
 
-  // Sort categories: active first
-  const sortedCategories = [...allCategories].sort((a, b) => {
-    const aActive = selectedCategories.includes(a.key as Category);
-    const bActive = selectedCategories.includes(b.key as Category);
-    return Number(bActive) - Number(aActive);
-  });
+  const sortedCategories = allCategories
+    .map((cat) => ({
+      key: cat,
+      label: cat.charAt(0).toUpperCase() + cat.slice(1),
+    }))
+    .sort((a, b) => {
+      const aActive = selectedCategories.includes(a.key);
+      const bActive = selectedCategories.includes(b.key);
+      return Number(bActive) - Number(aActive);
+    });
 
   return (
     <div className="w-full h-screen p-6 bg-sky-800 flex flex-col justify-center">

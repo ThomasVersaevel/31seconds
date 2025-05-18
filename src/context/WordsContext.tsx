@@ -1,4 +1,10 @@
-import { createContext, useContext, useState, ReactNode, useEffect } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
 
 // Raw imports
 import boysCategory from "../assets/categories/boys.csv?raw";
@@ -13,6 +19,7 @@ interface WordsContextType {
   getWords: (categories: Category[]) => string[];
   resetWords: () => void;
   selectedCategories: Category[];
+  allCategories: Category[];
   setSelectedCategories: (categories: Category[]) => void;
 }
 
@@ -22,6 +29,14 @@ const WordsContext = createContext<WordsContextType | undefined>(undefined);
 
 export const WordsProvider = ({ children }: { children: ReactNode }) => {
   const [selectedCategories, setSelectedCategories] = useState<Category[]>([
+    "boys",
+    "funny",
+    "people",
+    "places",
+    "words",
+  ]);
+
+  const [allCategories, setAllCategories] = useState<Category[]>([
     "boys",
     "funny",
     "people",
@@ -55,15 +70,15 @@ export const WordsProvider = ({ children }: { children: ReactNode }) => {
 
     setWordPools((prev) => ({ ...prev, ...customPools }));
 
-    // Optionally auto-add all custom categories to selection
     const customKeys = Object.keys(customPools);
     setSelectedCategories((prev) => [...new Set([...prev, ...customKeys])]);
+    setAllCategories((prev) => [...new Set([...prev, ...customKeys])]);
   }, []);
 
   const getWords = (categories: Category[] = selectedCategories): string[] => {
     const selectedWords: string[] = [];
-    const availablePools = categories.map((cat) =>
-      wordPools[cat]?.filter((word) => !usedWords.has(word)) || []
+    const availablePools = categories.map(
+      (cat) => wordPools[cat]?.filter((word) => !usedWords.has(word)) || []
     );
 
     while (
@@ -93,6 +108,7 @@ export const WordsProvider = ({ children }: { children: ReactNode }) => {
         getWords,
         resetWords,
         selectedCategories,
+        allCategories,
         setSelectedCategories,
       }}
     >
