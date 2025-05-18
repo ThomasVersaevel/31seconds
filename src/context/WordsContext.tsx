@@ -21,6 +21,7 @@ interface WordsContextType {
   selectedCategories: Category[];
   allCategories: Category[];
   setSelectedCategories: (categories: Category[]) => void;
+  refreshCategories: () => void;
 }
 
 const NR_WORDS = 5;
@@ -100,6 +101,29 @@ export const WordsProvider = ({ children }: { children: ReactNode }) => {
     return selectedWords;
   };
 
+  const refreshCategories = () => {
+    const customPools: Record<Category, string[]> = {};
+
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.endsWith(".csv")) {
+        const name = key.replace(".csv", "");
+        const csv = localStorage.getItem(key);
+        if (csv) {
+          customPools[name] = parseCSV(csv);
+        }
+      }
+    }
+
+    setWordPools((prev) => ({ ...prev, ...customPools }));
+
+    const customKeys = Object.keys(customPools) as Category[];
+    setSelectedCategories((prev) => [...new Set([...prev, ...customKeys])]);
+
+    const builtIn: Category[] = ["boys", "funny", "people", "places", "words"];
+    setAllCategories([...builtIn, ...customKeys]);
+  };
+
   const resetWords = () => setUsedWords(new Set());
 
   return (
@@ -110,6 +134,7 @@ export const WordsProvider = ({ children }: { children: ReactNode }) => {
         selectedCategories,
         allCategories,
         setSelectedCategories,
+        refreshCategories
       }}
     >
       {children}
@@ -123,6 +148,7 @@ const parseCSV = (csv: string): string[] =>
     .map((w) => w.trim())
     .filter(Boolean);
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useWords = () => {
   const context = useContext(WordsContext);
   if (!context) throw new Error("useWords must be used within a WordsProvider");

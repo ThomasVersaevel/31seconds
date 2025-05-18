@@ -21,6 +21,7 @@ export const GameSettingsProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useGameSettings = () => {
   const context = useContext(GameSettingsContext);
   if (!context) {

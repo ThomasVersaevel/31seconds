@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useGameSettings } from "../context/GameSettingsContext";
 import { useWords } from "../context/WordsContext";
 import { useNavigate } from "react-router-dom";
@@ -8,8 +8,12 @@ import { PlusCircleIcon, MinusCircleIcon } from "@heroicons/react/24/solid";
 const Settings: React.FC = () => {
   const { countdownTime, setCountdownTime, targetScore, setTargetScore } =
     useGameSettings();
-  const { allCategories, selectedCategories, setSelectedCategories } =
-    useWords();
+  const {
+    allCategories,
+    selectedCategories,
+    setSelectedCategories,
+    refreshCategories,
+  } = useWords();
   const navigate = useNavigate();
 
   const toggleCategory = (key: Category) => {
@@ -29,6 +33,10 @@ const Settings: React.FC = () => {
       const bActive = selectedCategories.includes(b.key);
       return Number(bActive) - Number(aActive);
     });
+
+  useEffect(() => {
+    refreshCategories();
+  }, []);
 
   return (
     <div className="w-full h-screen p-6 bg-sky-800 flex flex-col justify-center">
