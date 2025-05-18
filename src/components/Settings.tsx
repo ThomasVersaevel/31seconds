@@ -131,7 +131,7 @@ const Settings: React.FC = () => {
         <button
           type="button"
           className="w-full mt-auto px-4 py-2 mt-6 bg-sky-500 text-white rounded-lg hover:bg-sky-400 focus:outline-none focus:ring-2 focus:ring-sky-200 focus:ring-opacity-50"
-          onClick={() => navigate("/delete")}
+          onClick={() => navigate("/")}
         >
           Save and exit
         </button>
