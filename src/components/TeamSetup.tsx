@@ -68,14 +68,14 @@ const TeamSetup: React.FC = () => {
   };
 
   return (
-    <div className="w-full h-screen p-6 bg-sky-800 min-h-screen flex flex-col">
+    <div className="w-full h-full p-6 bg-sky-800 min-h-screen flex flex-col">
       <h2 className="text-3xl text-sky-300 font-bold text-center mb-4">
         Team Setup
       </h2>
-      <span className="text-gray-300 text-center">Teams: {teams.length}</span>
       <div className="mb-4">
+        <span className="text-gray-300 text-left">Teams: {teams.length}</span>
         <button
-          className="w-full mt-2 py-2 bg-gradient-to-t from-emerald-400 to-emerald-500 text-slate-200 rounded-lg font-medium"
+          className="w-40 ml-20 mt-2 py-2 bg-gradient-to-t from-emerald-400 to-emerald-500 text-slate-200 rounded-lg font-medium"
           onClick={handleAddTeam}
         >
           Add Team

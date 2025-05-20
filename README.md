@@ -7,4 +7,7 @@ Made with Vite, Typescript, React and some AI help.
 
 TODO:
 Play again button
-Pseudo random for each category
+Pseudo random for each category (tweak numbers and testing)
+
+Color bars per category in card.tsx
+more SFX on card page with timer
