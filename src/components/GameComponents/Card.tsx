@@ -82,14 +82,25 @@ export default function Card() {
   return (
     <div className="h-dvh w-full h-screen m-auto p-6 bg-sky-800 min-h-screen flex flex-col items-center text-center">
       <div className="m-auto">
-        <div className="mb-4 text-2xl font-bold text-sky-200">{timeLeft}s</div>
+        <div
+          className={`mb-4 text-3xl font-bold ${
+            timeLeft / countdownTime < 0.3
+              ? "text-red-500 animate-danger-pulse"
+              : "text-orange-500"
+          }`}
+        >
+          {timeLeft}s
+        </div>
+
         <div className="w-75 h-3 mb-6 bg-blue-100 rounded-full overflow-hidden">
           <div
-            className="h-full bg-orange-500 transition-all duration-1000 ease-linear"
+            className={`h-full transition-all duration-1000 ease-linear ${
+              timeLeft / countdownTime < 0.3
+                ? "bg-red-500 animate-danger-pulse"
+                : "bg-orange-500"
+            }`}
             style={{
-              width: `${
-                (timeLeft / countdownTime) * 100
-              }%`,
+              width: `${(timeLeft / countdownTime) * 100}%`,
             }}
           ></div>
         </div>

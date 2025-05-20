@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Team, useTeams } from "../context/TeamContext";
 import { useNavigate } from "react-router-dom";
+import { PlusCircleIcon } from "@heroicons/react/16/solid";
 
 const TeamSetup: React.FC = () => {
   const { setTeams: setGlobalTeams } = useTeams();
@@ -72,13 +73,14 @@ const TeamSetup: React.FC = () => {
       <h2 className="text-3xl text-sky-300 font-bold text-center mb-4">
         Team Setup
       </h2>
-      <div className="mb-4">
-        <span className="text-gray-300 text-left">Teams: {teams.length}</span>
+      <div className="mb-2 flex items-center justify-between">
+        <span className="text-gray-500 text-center text-xl">Teams: {teams.length}</span>
         <button
-          className="w-40 ml-20 mt-2 py-2 bg-gradient-to-t from-emerald-400 to-emerald-500 text-slate-200 rounded-lg font-medium"
+          className="flex items-center text-center px-3 justify-start py-2 bg-gradient-to-t from-emerald-400 to-emerald-500 text-slate-200 rounded-lg font-medium"
           onClick={handleAddTeam}
         >
-          Add Team
+          <PlusCircleIcon className="h-5 w-5 mr-2" />
+          <span>Add Team</span>
         </button>
       </div>
 

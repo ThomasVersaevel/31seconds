@@ -5,6 +5,26 @@
   background-color: black;
 } */
 
+@layer utilities {
+  .animate-danger-pulse {
+    animation: dangerPulse 1s infinite;
+  }
+}
+
+@keyframes dangerPulse {
+  0%, 100% {
+    color: #f87171; /* light red */
+    transform: scale(1);
+    background-color: #f87171; /* light red */
+  }
+  50% {
+    color: #b91c1c; /* darker red */
+    transform: scale(1.15);
+    background-color: #b91c1c;
+  }
+}
+
+
 /* Add to your global CSS or a module */
 @keyframes spin-slow {
   0% {
