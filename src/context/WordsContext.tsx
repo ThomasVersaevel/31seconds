@@ -78,15 +78,31 @@ export const WordsProvider = ({ children }: { children: ReactNode }) => {
 
   const getWords = (categories: Category[] = selectedCategories): string[] => {
     const selectedWords: string[] = [];
+
+    // Build available pools (excluding used words)
     const availablePools = categories.map(
       (cat) => wordPools[cat]?.filter((word) => !usedWords.has(word)) || []
     );
+
+    // Build weights array based on pool sizes
+    const weights = availablePools.map((pool) => pool.length);
+
+    // Flattened function to choose a category index based on weights
+    const pickWeightedIndex = (weights: number[]) => {
+      const total = weights.reduce((acc, w) => acc + w, 0);
+      let r = Math.random() * total;
+      for (let i = 0; i < weights.length; i++) {
+        if (r < weights[i]) return i;
+        r -= weights[i];
+      }
+      return 0; // fallback
+    };
 
     while (
       selectedWords.length < NR_WORDS &&
       availablePools.flat().length > 0
     ) {
-      const catIndex = Math.floor(Math.random() * categories.length);
+      const catIndex = pickWeightedIndex(weights);
       const pool = availablePools[catIndex];
 
       if (pool.length === 0) continue;
@@ -95,6 +111,9 @@ export const WordsProvider = ({ children }: { children: ReactNode }) => {
       const word = pool.splice(wordIndex, 1)[0];
       selectedWords.push(word);
       usedWords.add(word);
+
+      // Update the weight for that pool since it shrank
+      weights[catIndex]--;
     }
 
     setUsedWords(new Set(usedWords));
@@ -134,7 +153,7 @@ export const WordsProvider = ({ children }: { children: ReactNode }) => {
         selectedCategories,
         allCategories,
         setSelectedCategories,
-        refreshCategories
+        refreshCategories,
       }}
     >
       {children}
