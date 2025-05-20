@@ -39,7 +39,7 @@ const Settings: React.FC = () => {
   }, []);
 
   return (
-    <div className="w-full h-screen p-6 bg-sky-800 flex flex-col justify-center">
+    <div className="h-dvh w-full h-screen p-6 bg-sky-800 flex flex-col justify-center">
       <h2 className="text-3xl text-sky-300 font-bold text-center mb-auto">
         Game Settings
       </h2>

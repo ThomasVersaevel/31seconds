@@ -80,7 +80,7 @@ export default function Card() {
   }, [timeLeft]);
 
   return (
-    <div className="w-full h-screen p-6 bg-sky-800 min-h-screen flex flex-col items-center text-center">
+    <div className="h-dvh w-full h-screen m-auto p-6 bg-sky-800 min-h-screen flex flex-col items-center text-center">
       <div className="m-auto">
         <div className="mb-4 text-2xl font-bold text-sky-200">{timeLeft}s</div>
         <div className="w-75 h-3 mb-6 bg-blue-100 rounded-full overflow-hidden">
