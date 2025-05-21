@@ -33,7 +33,7 @@ export default function ScoringScreen() {
       <h2 className="text-xl font-bold text-sky-300 mb-auto">
         {teams[currentTeamIndex].name} Scoring
       </h2>
-      <div className="bg-blue-100 rounded-lg rounded-lg p-3 shadow-sm w-75">
+      <div className="bg-blue-100 rounded-lg border-solid border-3 border-orange-500 p-3 shadow-sm w-75">
         {words.map((word, index) => (
           <label
             key={index}
@@ -43,16 +43,17 @@ export default function ScoringScreen() {
               type="checkbox"
               checked={checkedWords.includes(word)}
               onChange={() => toggleWord(word)}
-              className="form-checkbox h-8 w-10"
+              className="form-checkbox h-8 w-8 accent-orange-400"
             />
-            <span>{word}</span>
+            <span className="text-left">{word}</span>
           </label>
         ))}
       </div>
       <div className="mt-auto text-lg font-semibold mt-4 space-y-1">
         {teams.map((team, index) => (
           <div key={index}>
-            <span className="text-slate-400">{team.name}:</span> <span className="text-slate-300">{team.points} points</span>
+            <span className="text-slate-400">{team.name}:</span>{" "}
+            <span className="text-slate-300">{team.points} points</span>
           </div>
         ))}
       </div>

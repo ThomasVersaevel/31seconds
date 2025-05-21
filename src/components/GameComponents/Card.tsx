@@ -80,38 +80,69 @@ export default function Card() {
   }, [timeLeft]);
 
   return (
-    <div className="h-dvh w-full h-screen m-auto p-6 bg-sky-800 min-h-screen flex flex-col items-center text-center">
-      <div className="m-auto">
-        <div
-          className={`mb-4 text-3xl font-bold ${
-            timeLeft / countdownTime < 0.3
-              ? "text-red-500 animate-danger-pulse"
-              : "text-orange-500"
-          }`}
-        >
-          {timeLeft}s
-        </div>
+    <div className="relative h-dvh w-full bg-sky-800 overflow-hidden">
+      <div
+        className="bottom-0 w-full absolute bg-sky-600 opacity-30 z-0 transition-all duration-1000 ease-linear"
+        style={{ height: `${(timeLeft / countdownTime) * 100}%` }}
+      >
+        {[...Array(5)].map((_, i) => {
+          const left = 5 + Math.random() * 95; // random horizontal position (5–95vw)
+          const delay = Math.random() * 5; // delay between 0–5 seconds
+          const riseHeight =
+            10 + Math.random() * (timeLeft / countdownTime) * 90; // between 10vh and height of the water
+          const scale = 0.8 + Math.random() * 2; // bubble size between 0.8 and 2
+          return (
+            <div
+              key={i}
+              className="bubble absolute bottom-0"
+              style={
+                {
+                  left: `${left}vw`,
+                  bottom: "0px",
+                  animationDelay: `${delay}s`,
+                  "--rise-height": `${riseHeight}vh`,
+                  "--bubble-size": scale,
+                } as React.CSSProperties
+              }
+            ></div>
+          );
+        })}
+      </div>
 
-        <div className="w-75 h-3 mb-6 bg-blue-100 rounded-full overflow-hidden">
+      <div className="relative z-10 h-full flex flex-col items-center text-center p-6">
+        <div className="m-auto">
           <div
-            className={`h-full transition-all duration-1000 ease-linear ${
+            className={`mb-4 text-3xl font-bold ${
               timeLeft / countdownTime < 0.3
-                ? "bg-red-500 animate-danger-pulse"
-                : "bg-orange-500"
+                ? "text-red-500 animate-text-pulse"
+                : "text-orange-500"
             }`}
-            style={{
-              width: `${(timeLeft / countdownTime) * 100}%`,
-            }}
-          ></div>
-        </div>
-        {words.map((word, index) => (
-          <div
-            key={index}
-            className="z-1 bg-blue-100 text-black py-3 px-4 rounded-lg text-lg font-medium shadow-sm w-75 mb-2"
           >
-            <b>{word}</b>
+            {timeLeft}s
           </div>
-        ))}
+
+          <div className="w-75 h-3 mb-6 bg-blue-100 rounded-full overflow-hidden">
+            <div
+              className={`h-full transition-all duration-1000 ease-linear ${
+                timeLeft / countdownTime < 0.3
+                  ? "bg-red-500 animate-danger-pulse"
+                  : "bg-orange-500"
+              }`}
+              style={{
+                width: `${(timeLeft / countdownTime) * 100}%`,
+              }}
+            ></div>
+          </div>
+
+          {words.map((word, index) => (
+            <div
+              key={index}
+              className="z-1 bg-blue-100 text-black py-3 px-4 rounded-lg text-lg font-medium shadow-sm w-75 mb-2"
+            >
+              <b>{word}</b>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

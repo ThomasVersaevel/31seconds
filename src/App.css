@@ -1,29 +1,51 @@
-/* #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  text-align: center;
-  background-color: black;
-} */
-
 @layer utilities {
   .animate-danger-pulse {
     animation: dangerPulse 1s infinite;
   }
+  .animate-text-pulse {
+    animation: dangerTextPulse 1s infinite;
+  }
 }
 
+/* Animations for card.tsx */
 @keyframes dangerPulse {
-  0%, 100% {
-    color: #f87171; /* light red */
-    transform: scale(1);
-    background-color: #f87171; /* light red */
+  0%,
+  100% {
+    background-color: #ff6900; 
   }
   50% {
-    color: #b91c1c; /* darker red */
-    transform: scale(1.15);
-    background-color: #b91c1c;
+    background-color: #c0131b;
+  }
+}
+@keyframes dangerTextPulse {
+  0%,
+  100% {
+    color: #ff6900; 
+  }
+  50% {
+    color: #c0131b; 
   }
 }
 
+.bubble {
+  width: 15px;
+  height: 15px;
+  background-color: rgb(113, 214, 248);
+  border-radius: 50%;
+  animation: bubble-rise 5s ease-out infinite;
+  opacity: 0;
+}
+
+@keyframes bubble-rise {
+  0% {
+    transform: translateY(0) scale(var(--bubble-size, 1));
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(calc(-1 * var(--rise-height, 100vh))) scale(var(--bubble-size, 1));
+  }
+}
 
 /* Add to your global CSS or a module */
 @keyframes spin-slow {
@@ -53,7 +75,6 @@
   transform: translate(-50%, -50%);
 }
 
-
 /* Fireworks container */
 .firework {
   position: absolute;
@@ -74,12 +95,9 @@
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  box-shadow:
-    0 0 5px 2px var(--firework-color, gold),
-    10px 0 0 var(--firework-color, gold),
-    -10px 0 0 var(--firework-color, gold),
-    0 10px 0 var(--firework-color, gold),
-    0 -10px 0 var(--firework-color, gold);
+  box-shadow: 0 0 5px 2px var(--firework-color, gold),
+    10px 0 0 var(--firework-color, gold), -10px 0 0 var(--firework-color, gold),
+    0 10px 0 var(--firework-color, gold), 0 -10px 0 var(--firework-color, gold);
   opacity: 0;
   animation: firework-explode 1.5s ease-out infinite;
 }
