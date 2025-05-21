@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useGameSettings } from "../../context/GameSettingsContext.tsx";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useWords } from "../../context/WordsContext.tsx";
@@ -16,6 +16,15 @@ export default function Card() {
 
   const { selectedCategories, getWords } = useWords();
   const [words, setWords] = useState<string[]>([]);
+  const randoms = useRef(
+    // useRef here makes sure it doesnt re-random the values on a re-render
+    [...Array(7)].map(() => ({
+      left: 5 + Math.random() * 95, // Random position between 5vw and 95vw
+      delay: Math.random() * 5, // Animation delay between 0–2s
+      riseHeight: 10 + Math.random() * 80, // Rise height between 10vh and 100vh
+      scale: 0.8 + Math.random() * 3, // Scale between 0.8 and 2.0
+    }))
+  );
 
   // Prevent page refresh
   const preventRefresh = () => {
@@ -85,23 +94,23 @@ export default function Card() {
         className="bottom-0 w-full absolute bg-sky-600 opacity-30 z-0 transition-all duration-1000 ease-linear"
         style={{ height: `${(timeLeft / countdownTime) * 100}%` }}
       >
-        {[...Array(5)].map((_, i) => {
-          const left = 5 + Math.random() * 95; // random horizontal position (5–95vw)
-          const delay = Math.random() * 5; // delay between 0–5 seconds
-          const riseHeight =
-            10 + Math.random() * (timeLeft / countdownTime) * 90; // between 10vh and height of the water
-          const scale = 0.8 + Math.random() * 2; // bubble size between 0.8 and 2
+        <div className="wave absolute top-0 left-0 w-full h-6"></div>
+      </div>
+
+      <div>
+        {randoms.current.map((bubble, i) => {
+          const visible = bubble.riseHeight <= (timeLeft / countdownTime) * 100;
           return (
             <div
               key={i}
               className="bubble absolute bottom-0"
               style={
                 {
-                  left: `${left}vw`,
-                  bottom: "0px",
-                  animationDelay: `${delay}s`,
-                  "--rise-height": `${riseHeight}vh`,
-                  "--bubble-size": scale,
+                  left: `${bubble.left}vw`,
+                  animationDelay: `${bubble.delay}s`,
+                  visibility: visible ? "visible" : "hidden",
+                  "--rise-height": `${bubble.riseHeight}vh`,
+                  "--bubble-size": bubble.scale,
                 } as React.CSSProperties
               }
             ></div>

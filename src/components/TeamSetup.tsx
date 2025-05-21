@@ -74,7 +74,7 @@ const TeamSetup: React.FC = () => {
         Team Setup
       </h2>
       <div className="mb-2 flex items-center justify-between">
-        <span className="text-gray-500 text-center text-xl">Teams: {teams.length}</span>
+        <span className="text-orange-500 text-center text-2xl">Teams: {teams.length}</span>
         <button
           className="flex items-center text-center px-3 justify-start py-2 bg-gradient-to-t from-emerald-400 to-emerald-500 text-slate-200 rounded-lg font-medium"
           onClick={handleAddTeam}
@@ -105,7 +105,7 @@ const TeamSetup: React.FC = () => {
               type="text"
               value={team.name}
               onChange={(e) => handleTeamNameChange(teamIndex, e.target.value)}
-              className="mt-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-sky-500 dark:focus:border-sky-500"
+              className="mt-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full p-2.5"
             />
           </label>
 
@@ -119,7 +119,7 @@ const TeamSetup: React.FC = () => {
                   onChange={(e) =>
                     handlePlayerChange(teamIndex, playerIndex, e.target.value)
                   }
-                  className="mt-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-sky-500 dark:focus:border-sky-500"
+                  className="mt-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full p-2.5"
                   placeholder={`Player ${playerIndex + 1}`}
                 />
                 <button
