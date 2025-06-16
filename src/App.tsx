@@ -71,7 +71,7 @@ export function App() {
                 />
               }
             />
-            <Route path="/game/winner" element={<Winner teamName={""} />} />
+            <Route path="/game/winner" element={<Winner />} />
           </Routes>
         </WordsProvider>
       </TeamProvider>
