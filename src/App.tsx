@@ -24,7 +24,7 @@ export function App() {
             <Route
               path="/"
               element={
-                <div className="overflow-hidden bg-gradient-to-t from-sky-800 to-sky-700 mx-auto p-6 flex flex-col justify-between items-center text-center min-h-screen w-screen flex">
+                <div className="overflow-hidden bg-gradient-to-t from-sky-800 to-sky-700 mx-auto p-6 flex flex-col justify-center items-center text-center min-h-screen w-screen flex">
                   <div className="z-1 blob"> </div>
                   <div className="flex-grow flex flex-col items-center justify-center px-4">
                     <h1 className="text-4xl font-semibold text-center text-orange-500 mb-6">
