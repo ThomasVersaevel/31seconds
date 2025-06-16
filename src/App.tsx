@@ -24,8 +24,7 @@ export function App() {
             <Route
               path="/"
               element={
-                <div className="h-dvh bg-gradient-to-t from-sky-800 to-sky-700 w-full mx-auto p-6 shadow-xl flex flex-col justify-center items-center text-center min-h-screen flex flex-col justify-between">
-                  <meta name="apple-mobile-web-app-capable" content="yes" />
+                <div className="overflow-hidden bg-gradient-to-t from-sky-800 to-sky-700 mx-auto p-6 flex flex-col justify-between items-center text-center min-h-screen w-screen flex">
                   <div className="z-1 blob"> </div>
                   <div className="flex-grow flex flex-col items-center justify-center px-4">
                     <h1 className="text-4xl font-semibold text-center text-orange-500 mb-6">
@@ -33,7 +32,7 @@ export function App() {
                     </h1>
                     <div className="z-1 flex flex-col items-center space-y-4">
                       <button
-                        className="pw-full px-4 py-2 bg-sky-500 text-white rounded-lg hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-sky-300 focus:ring-opacity-50"
+                        className="w-full px-4 py-2 bg-sky-500 text-white rounded-lg hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-sky-300 focus:ring-opacity-50"
                         onClick={() => navigate("/teamsetup")}
                       >
                         Start Game

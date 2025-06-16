@@ -90,6 +90,7 @@
   width: 82vw;
   height: 82vw;
   background: linear-gradient(135deg, #34d399, #3b82f6);
+  overflow: hidden;
   animation: spin-slow 30s infinite linear;
   opacity: 0.3;
   margin: auto;
