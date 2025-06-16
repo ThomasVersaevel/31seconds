@@ -1,14 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useTeams } from "../../context/TeamContext";
 
-interface WinnerProps {
-  teamName: string;
-}
-
-const Winner: React.FC<WinnerProps> = () => {
+const Winner = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const { teamName } = location.state as WinnerProps;
   const [showAirplanes, setShowAirplanes] = useState(false);
   const colors = [
     "gold",
@@ -21,21 +16,32 @@ const Winner: React.FC<WinnerProps> = () => {
     "white",
   ];
 
+  const { teams, resetPoints } = useTeams();
+
   useEffect(() => {
     // Determine scene with 10% airplane, 90% fireworks
     const randomChance = Math.random();
     setShowAirplanes(randomChance < 0.15);
   }, []);
 
+  // Reset points and index for all teams
+  const playAgain = () => {
+    resetPoints();
+    navigate("/game");
+  };
+
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-t from-sky-800 to-sky-700 p-4">
       <h1 className="text-3xl font-bold text-orange-500 mb-6">
         Congratulations!
       </h1>
-      <h1 className="text-3xl font-bold text-sky-300">{teamName}</h1>
+      <h1 className="text-3xl font-bold text-sky-300">
+        {teams.reduce((prev, curr) => (curr.points > prev.points ? curr : prev))
+          .name ?? ""}
+      </h1>
 
       <button
-        onClick={() => navigate("/game")}
+        onClick={playAgain}
         className="mt-6 w-75 px-6 py-3 bg-sky-600 text-white rounded-lg text-lg shadow hover:bg-sky-700"
       >
         Play Again
@@ -46,6 +52,15 @@ const Winner: React.FC<WinnerProps> = () => {
       >
         Main Menu
       </button>
+
+      <div className="mt-auto text-lg font-semibold mt-4 space-y-1">
+        {teams.map((team, index) => (
+          <div key={index}>
+            <span className="text-slate-400">{team.name}:</span>{" "}
+            <span className="text-slate-300">{team.points} points</span>
+          </div>
+        ))}
+      </div>
 
       {showAirplanes ? (
         <div className="airplane-scene">

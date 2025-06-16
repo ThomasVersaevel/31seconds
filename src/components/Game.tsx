@@ -11,12 +11,8 @@ export function Game() {
 
   useEffect(() => {
     teams.forEach((team) => {
-      if (team.points >= targetScore) {
-        navigate("/game/winner", {
-          state: {
-            teamName: team.name,
-          },
-        });
+      if (team.points >= targetScore && currentTeamIndex === 0) {
+        navigate("/game/winner");
       }
     });
   }, [teams, targetScore, navigate]);

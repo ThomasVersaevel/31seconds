@@ -54,6 +54,11 @@ export default function ScoringScreen() {
           <div key={index}>
             <span className="text-slate-400">{team.name}:</span>{" "}
             <span className="text-slate-300">{team.points} points</span>
+            {teams[currentTeamIndex].name === team.name && (
+              <span className="text-slate-300">
+                {" + " + checkedWords.length}
+              </span>
+            )}
           </div>
         ))}
       </div>

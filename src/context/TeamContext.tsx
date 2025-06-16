@@ -13,6 +13,7 @@ interface TeamContextType {
   setTeams: (teams: Team[]) => void;
   currentTeamIndex: number;
   advanceTeamIndex: (points: number) => void;
+  resetPoints: () => void;
 }
 
 const TeamContext = createContext<TeamContextType | undefined>(undefined);
@@ -36,13 +37,23 @@ export const TeamProvider = ({ children }: { children: ReactNode }) => {
         ? {
             ...team,
             nextUpIndex: updatedNextUpIndex,
-            points: team.points + score, // Use team.points here
+            points: team.points + score,
           }
         : team
     ) as Team[];
 
     setTeams(updatedTeams);
   };
+
+  const resetPoints = () => {
+    const resetTeams = teams.map((team) => ({
+      ...team,
+      points: 0,
+      nextUpIndex: 0,
+    })) as Team[];
+    setTeams(resetTeams);
+  };
+
   return (
     <TeamContext.Provider
       value={{
@@ -50,6 +61,7 @@ export const TeamProvider = ({ children }: { children: ReactNode }) => {
         setTeams,
         currentTeamIndex,
         advanceTeamIndex,
+        resetPoints,
       }}
     >
       {children}
