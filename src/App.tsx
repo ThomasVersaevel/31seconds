@@ -12,9 +12,30 @@ import { WordsProvider } from "./context/WordsContext";
 import Winner from "./components/GameComponents/Winner";
 import CreateCategory from "./components/CreateCategory";
 import DeleteCategory from "./components/DeleteCategory";
+import { useEffect, useState } from "react";
 
 export function App() {
   const navigate = useNavigate();
+
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+
+  useEffect(() => {
+    const handler = (e: any) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+    };
+
+    window.addEventListener("beforeinstallprompt", handler);
+
+    return () => window.removeEventListener("beforeinstallprompt", handler);
+  }, []);
+
+  const handleInstallClick = () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(() => setDeferredPrompt(null));
+    }
+  };
 
   return (
     <GameSettingsProvider>
@@ -43,7 +64,16 @@ export function App() {
                       >
                         Settings
                       </button>
+                      {deferredPrompt && (
+                        <button
+                          className="w-full py-2 bg-sky-500 text-white rounded-lg hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-sky-300 focus:ring-opacity-50"
+                          onClick={handleInstallClick}
+                        >
+                          Install App
+                        </button>
+                      )}
                     </div>
+
                     <footer className="text-center py-4 text-gray-300  text-sm">
                       By ThoBro
                     </footer>
