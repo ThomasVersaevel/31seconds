@@ -94,7 +94,6 @@ export default function Card() {
         className="bottom-0 w-full absolute bg-sky-600 opacity-30 z-0 transition-all duration-1000 ease-linear"
         style={{ height: `${(timeLeft / countdownTime) * 100}%` }}
       >
-        <div className="wave absolute top-0 left-0 w-full h-6"></div>
       </div>
 
       <div>
