@@ -11,7 +11,7 @@ export default defineConfig({
       registerType: "autoUpdate",
       manifest: {
         name: "31 Seconds",
-        short_name: "31Sec",
+        short_name: "31 Seconds",
         theme_color: "#0069a8",
         start_url: "/",
         display: "standalone",
