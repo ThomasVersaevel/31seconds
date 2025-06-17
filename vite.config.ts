@@ -12,10 +12,10 @@ export default defineConfig({
       manifest: {
         name: "31 Seconds",
         short_name: "31Sec",
-        theme_color: "#0ea5e9",
+        theme_color: "#0069a8",
         start_url: "/",
         display: "standalone",
-        background_color: "#0ea5e9",
+        background_color: "#0069a8",
         icons: [
           {
             src: "/icon-192x192.png",
