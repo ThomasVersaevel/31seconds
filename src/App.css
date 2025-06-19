@@ -11,7 +11,7 @@
 @keyframes dangerPulse {
   0%,
   100% {
-    background-color: #ff6900; 
+    background-color: #ff6900;
   }
   50% {
     background-color: #c0131b;
@@ -20,10 +20,10 @@
 @keyframes dangerTextPulse {
   0%,
   100% {
-    color: #ff6900; 
+    color: #ff6900;
   }
   50% {
-    color: #c0131b; 
+    color: #c0131b;
   }
 }
 
@@ -48,7 +48,11 @@
 }
 
 .wave {
-  background: radial-gradient(circle at 50% 100%, rgba(255, 255, 255, 0.4) 0%, rgba(0, 0, 0, 0) 70%);
+  background: radial-gradient(
+    circle at 50% 100%,
+    rgba(255, 255, 255, 0.4) 0%,
+    rgba(0, 0, 0, 0) 70%
+  );
   border-top-left-radius: 50% 100%;
   border-top-right-radius: 50% 100%;
   height: 12px;
@@ -66,7 +70,6 @@
     transform: translateX(0) translateY(0);
   }
 }
-
 
 /* Add to your global CSS or a module */
 @keyframes spin-slow {
@@ -87,10 +90,10 @@
 }
 .blob {
   position: absolute;
+  overflow: hidden;
   width: 82vw;
   height: 82vw;
   background: linear-gradient(135deg, #34d399, #3b82f6);
-  overflow: hidden;
   animation: spin-slow 30s infinite linear;
   opacity: 0.3;
   margin: auto;
