@@ -48,9 +48,11 @@ export function App() {
                 <div className="fixed inset-0 overflow-hidden bg-gradient-to-t from-sky-800 to-sky-700 mx-auto p-6 flex flex-col justify-center items-center text-center min-h-screen w-screen flex">
                   <div className="blob"> </div>
                   <div className="flex-grow flex flex-col items-center justify-center px-4">
-                    <h1 className="text-4xl font-semibold text-center text-orange-500 mb-6">
-                      31 Seconds
-                    </h1>
+                    <img
+                      src="/icon-512x512.png"
+                      alt="App Icon"
+                      className="w-24 h-24 mb-4"
+                    ></img>
                     <div className="z-1 flex flex-col items-center space-y-4">
                       <button
                         className="w-full px-4 py-2 bg-sky-500 text-white rounded-lg hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-sky-300 focus:ring-opacity-50"
