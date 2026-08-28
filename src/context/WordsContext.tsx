@@ -13,7 +13,7 @@ import funnyCategory from "../assets/categories/funny.csv?raw";
 import peopleCategory from "../assets/categories/people.csv?raw";
 import placesCategory from "../assets/categories/places.csv?raw";
 import wordsCategory from "../assets/categories/words.csv?raw";
-import bannedCategory from "../assets/categories/Banned.csv?raw";
+import bannedCategory from "../assets/categories/banned.csv?raw";
 
 export type Category = string; // Changed from union type to support dynamic custom categories
 
