@@ -4,6 +4,7 @@ import {
   useState,
   ReactNode,
   useEffect,
+  useRef,
 } from "react";
 
 // Raw imports
@@ -12,6 +13,7 @@ import funnyCategory from "../assets/categories/funny.csv?raw";
 import peopleCategory from "../assets/categories/people.csv?raw";
 import placesCategory from "../assets/categories/places.csv?raw";
 import wordsCategory from "../assets/categories/words.csv?raw";
+import bannedCategory from "../assets/categories/Banned.csv?raw";
 
 export type Category = string; // Changed from union type to support dynamic custom categories
 
@@ -22,11 +24,25 @@ interface WordsContextType {
   allCategories: Category[];
   setSelectedCategories: (categories: Category[]) => void;
   refreshCategories: () => void;
+  getWordCategory: (word: string) => Category | undefined;
+  getBannedWords: () => string[];
+  editWord: (word: string, replacement: string) => boolean;
+  deleteWord: (word: string) => void;
 }
 
 const NR_WORDS = 5;
 
 const WordsContext = createContext<WordsContextType | undefined>(undefined);
+
+const builtInCategories: Category[] = [
+  "boys",
+  "funny",
+  "people",
+  "places",
+  "words",
+];
+
+const categoryStorageKey = (category: Category) => `${category}.csv`;
 
 export const WordsProvider = ({ children }: { children: ReactNode }) => {
   const [selectedCategories, setSelectedCategories] = useState<Category[]>([
@@ -38,22 +54,21 @@ export const WordsProvider = ({ children }: { children: ReactNode }) => {
   ]);
 
   const [allCategories, setAllCategories] = useState<Category[]>([
-    "boys",
-    "funny",
-    "people",
-    "places",
-    "words",
+    ...builtInCategories,
   ]);
 
   const [wordPools, setWordPools] = useState<Record<Category, string[]>>({
-    boys: parseCSV(boysCategory),
-    funny: parseCSV(funnyCategory),
-    people: parseCSV(peopleCategory),
-    places: parseCSV(placesCategory),
-    words: parseCSV(wordsCategory),
+    boys: loadCategory("boys", boysCategory),
+    funny: loadCategory("funny", funnyCategory),
+    people: loadCategory("people", peopleCategory),
+    places: loadCategory("places", placesCategory),
+    words: loadCategory("words", wordsCategory),
+    banned: loadCategory("banned", bannedCategory),
   });
 
   const [usedWords, setUsedWords] = useState<Set<string>>(new Set());
+  const wordSources = useRef<Record<string, Category>>({});
+  const categorySkipCounts = useRef<Record<Category, number>>({});
 
   useEffect(() => {
     const customPools: Record<Category, string[]> = {};
@@ -71,7 +86,9 @@ export const WordsProvider = ({ children }: { children: ReactNode }) => {
 
     setWordPools((prev) => ({ ...prev, ...customPools }));
 
-    const customKeys = Object.keys(customPools);
+    const customKeys = Object.keys(customPools).filter(
+      (category) => category.toLowerCase() !== "banned"
+    );
     setSelectedCategories((prev) => [...new Set([...prev, ...customKeys])]);
     setAllCategories((prev) => [...new Set([...prev, ...customKeys])]);
   }, []);
@@ -84,8 +101,14 @@ export const WordsProvider = ({ children }: { children: ReactNode }) => {
       (cat) => wordPools[cat]?.filter((word) => !usedWords.has(word)) || []
     );
 
-    // Build weights array based on pool sizes
-    const weights = availablePools.map((pool) => pool.length);
+    // Moderate list-size differences so skipped categories get a soft boost.
+    const weights = availablePools.map((pool, index) => {
+      const category = categories[index];
+      const sizeWeight = Math.sqrt(pool.length);
+      const skipBoost = 1 + (categorySkipCounts.current[category] || 0) * 0.35;
+      return sizeWeight * skipBoost;
+    });
+    const selectedCategoriesThisRound = new Set<Category>();
 
     // Flattened function to choose a category index based on weights
     const pickWeightedIndex = (weights: number[]) => {
@@ -110,11 +133,25 @@ export const WordsProvider = ({ children }: { children: ReactNode }) => {
       const wordIndex = Math.floor(Math.random() * pool.length);
       const word = pool.splice(wordIndex, 1)[0];
       selectedWords.push(word);
+      wordSources.current[word] = categories[catIndex];
+      selectedCategoriesThisRound.add(categories[catIndex]);
       usedWords.add(word);
 
       // Update the weight for that pool since it shrank
-      weights[catIndex]--;
+      weights[catIndex] = Math.sqrt(pool.length) *
+        (1 + (categorySkipCounts.current[categories[catIndex]] || 0) * 0.35);
     }
+
+    categories.forEach((category) => {
+      if (selectedCategoriesThisRound.has(category)) {
+        categorySkipCounts.current[category] = 0;
+      } else if (availablePools[categories.indexOf(category)]?.length) {
+        categorySkipCounts.current[category] = Math.min(
+          (categorySkipCounts.current[category] || 0) + 1,
+          3
+        );
+      }
+    });
 
     setUsedWords(new Set(usedWords));
     return selectedWords;
@@ -139,11 +176,53 @@ export const WordsProvider = ({ children }: { children: ReactNode }) => {
     const customKeys = Object.keys(customPools) as Category[];
     setSelectedCategories((prev) => [...new Set([...prev, ...customKeys])]);
 
-    const builtIn: Category[] = ["boys", "funny", "people", "places", "words"];
-    setAllCategories([...builtIn, ...customKeys]);
+    setAllCategories([...builtInCategories, ...customKeys.filter((key) => key.toLowerCase() !== "banned")]);
   };
 
   const resetWords = () => setUsedWords(new Set());
+
+  const getBannedWords = () => wordPools.banned || [];
+
+  const getWordCategory = (word: string) =>
+    wordSources.current[word] ||
+    (Object.entries(wordPools).find(
+      ([category, words]) => category !== "banned" && words.includes(word)
+    )?.[0] as Category | undefined);
+
+  const editWord = (word: string, replacement: string) => {
+    const category = getWordCategory(word);
+    if (!category) return false;
+    const replacementExists = Object.entries(wordPools).some(
+      ([poolCategory, words]) =>
+        poolCategory !== "banned" && words.includes(replacement) && replacement !== word
+    );
+    if (replacementExists) return false;
+
+    setWordPools((prev) => {
+      const updatedWords = prev[category].map((currentWord) =>
+        currentWord === word ? replacement : currentWord
+      );
+      localStorage.setItem(categoryStorageKey(category), updatedWords.join(","));
+      wordSources.current[replacement] = category;
+      delete wordSources.current[word];
+      return { ...prev, [category]: updatedWords };
+    });
+    return true;
+  };
+
+  const deleteWord = (word: string) => {
+    const category = getWordCategory(word);
+    if (!category) return;
+
+    setWordPools((prev) => {
+      const updatedWords = prev[category].filter((currentWord) => currentWord !== word);
+      const bannedWords = [...(prev.banned || []), word];
+      localStorage.setItem(categoryStorageKey(category), updatedWords.join(","));
+      localStorage.setItem(categoryStorageKey("banned"), bannedWords.join(","));
+      delete wordSources.current[word];
+      return { ...prev, [category]: updatedWords, banned: bannedWords };
+    });
+  };
 
   return (
     <WordsContext.Provider
@@ -154,6 +233,10 @@ export const WordsProvider = ({ children }: { children: ReactNode }) => {
         allCategories,
         setSelectedCategories,
         refreshCategories,
+        getWordCategory,
+        getBannedWords,
+        editWord,
+        deleteWord,
       }}
     >
       {children}
@@ -166,6 +249,11 @@ const parseCSV = (csv: string): string[] =>
     .split(",")
     .map((w) => w.trim())
     .filter(Boolean);
+
+const loadCategory = (category: Category, fallback: string): string[] => {
+  const saved = localStorage.getItem(categoryStorageKey(category));
+  return parseCSV(saved ?? fallback);
+};
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const useWords = () => {

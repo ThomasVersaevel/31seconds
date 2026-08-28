@@ -11,3 +11,6 @@ Pseudo random for each category (tweak numbers and testing)
 
 Color bars per category in card.tsx
 more SFX on card page with timer
+
+Todo 28-8-2026
+- Needs a way to store more word lists or ad to them ingame. 

@@ -3,7 +3,11 @@ import { useGameSettings } from "../context/GameSettingsContext";
 import { useWords } from "../context/WordsContext";
 import { useNavigate } from "react-router-dom";
 import { Category } from "../context/WordsContext";
-import { PlusCircleIcon, MinusCircleIcon } from "@heroicons/react/24/solid";
+import {
+  ArrowDownTrayIcon,
+  PlusCircleIcon,
+  MinusCircleIcon,
+} from "@heroicons/react/24/solid";
 
 const Settings: React.FC = () => {
   const { countdownTime, setCountdownTime, targetScore, setTargetScore } =
@@ -13,6 +17,7 @@ const Settings: React.FC = () => {
     selectedCategories,
     setSelectedCategories,
     refreshCategories,
+    getBannedWords,
   } = useWords();
   const navigate = useNavigate();
 
@@ -21,6 +26,18 @@ const Settings: React.FC = () => {
       ? selectedCategories.filter((c) => c !== key)
       : [...selectedCategories, key];
     setSelectedCategories(newCategories);
+  };
+
+  const bannedWords = getBannedWords();
+
+  const downloadBannedWords = () => {
+    const csv = `${bannedWords.join(",")}\n`;
+    const url = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "Banned.csv";
+    link.click();
+    URL.revokeObjectURL(url);
   };
 
   const sortedCategories = allCategories
@@ -126,6 +143,33 @@ const Settings: React.FC = () => {
             <MinusCircleIcon className="h-5 w-5" />
             <span>Delete Category</span>
           </button>
+        </div>
+
+        <div className="space-y-3">
+          <div className="flex items-center justify-between gap-4">
+            <label
+              htmlFor="bannedWords"
+              className="text-lg font-medium text-sky-200"
+            >
+              Banned words ({bannedWords.length})
+            </label>
+            <button
+              type="button"
+              onClick={downloadBannedWords}
+              className="flex items-center gap-2 rounded-lg bg-emerald-500 px-3 py-2 text-sm font-semibold text-white hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-200"
+            >
+              <ArrowDownTrayIcon className="h-5 w-5" />
+              Banned words CSV
+            </button>
+          </div>
+          <textarea
+            id="bannedWords"
+            readOnly
+            value={bannedWords.join("\n")}
+            placeholder="No banned words"
+            className="min-h-24 w-full resize-y rounded-lg bg-sky-200 p-3 text-black outline-none"
+            aria-label="Banned words"
+          />
         </div>
 
         <button
