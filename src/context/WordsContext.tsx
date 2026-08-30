@@ -13,6 +13,7 @@ import funnyCategory from "../assets/categories/funny.csv?raw";
 import peopleCategory from "../assets/categories/people.csv?raw";
 import placesCategory from "../assets/categories/places.csv?raw";
 import wordsCategory from "../assets/categories/words.csv?raw";
+import animalsCategory from "../assets/categories/animals.csv?raw";
 import bannedCategory from "../assets/categories/banned.csv?raw";
 
 export type Category = string; // Changed from union type to support dynamic custom categories
@@ -63,6 +64,7 @@ export const WordsProvider = ({ children }: { children: ReactNode }) => {
     people: loadCategory("people", peopleCategory),
     places: loadCategory("places", placesCategory),
     words: loadCategory("words", wordsCategory),
+    animals: loadCategory("animal", animalsCategory),
     banned: loadCategory("banned", bannedCategory),
   });
 
