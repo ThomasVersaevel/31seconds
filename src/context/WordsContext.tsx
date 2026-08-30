@@ -41,6 +41,7 @@ const builtInCategories: Category[] = [
   "people",
   "places",
   "words",
+  "animals",
 ];
 
 const categoryStorageKey = (category: Category) => `${category}.csv`;
@@ -52,6 +53,7 @@ export const WordsProvider = ({ children }: { children: ReactNode }) => {
     "people",
     "places",
     "words",
+    "animals",
   ]);
 
   const [allCategories, setAllCategories] = useState<Category[]>([
@@ -64,7 +66,7 @@ export const WordsProvider = ({ children }: { children: ReactNode }) => {
     people: loadCategory("people", peopleCategory),
     places: loadCategory("places", placesCategory),
     words: loadCategory("words", wordsCategory),
-    animals: loadCategory("animal", animalsCategory),
+    animals: loadCategory("animals", animalsCategory),
     banned: loadCategory("banned", bannedCategory),
   });
 

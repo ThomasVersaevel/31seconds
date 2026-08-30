@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import "./App.css";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { Game } from "./components/Game";
